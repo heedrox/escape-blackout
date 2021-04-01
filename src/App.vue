@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <desktop-icon text="Network" :icon="require('./components/puzzle-1/puzzle-1-icon.svg')"></desktop-icon>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DesktopIcon from './components/DesktopIcon.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    DesktopIcon
   }
 }
 </script>
 
 <style>
+body {
+  padding: 0;
+  margin: 0;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Consolas, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #fff;
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  padding-left: 5vw;
+  padding-top: 5vh;
 }
 </style>
