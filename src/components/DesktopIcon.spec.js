@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import Icon from './Icon.vue'
+import Icon from './DesktopIcon.vue'
 
-describe('Icon.vue', () => {
+describe('DesktopIcon.vue', () => {
   it('renders the text', () => {
     const text = 'Puzzle 1';
 

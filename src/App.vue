@@ -30,5 +30,6 @@ body {
   width: 100vw;
   padding-left: 5vw;
   padding-top: 5vh;
+  overflow: hidden;
 }
 </style>
