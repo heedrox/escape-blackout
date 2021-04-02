@@ -4,7 +4,6 @@
     @click="clickDesktopIcon()"></desktop-icon>
     <desktop-window v-if="showDesktopWindow" title="Hola caracola" @close="closeDesktopIcon">
     </desktop-window>
-    {{ showDesktopWindow }}
   </div>
 </template>
 <script>

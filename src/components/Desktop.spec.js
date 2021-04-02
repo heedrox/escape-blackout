@@ -19,11 +19,21 @@ describe('Desktop.vue', () => {
     expect(wrapper.findComponent(DesktopWindow).exists()).toBe(false);
   });
 
-  it('shows window when icon is clicked', async () => {
-    wrapper.findComponent(DesktopIcon).vm.$emit('click');
-    await wrapper.vm.$nextTick();
+  describe('the full window', () => {
+    it('shows when icon is clicked', async () => {
+      wrapper.findComponent(DesktopIcon).vm.$emit('click');
+      await wrapper.vm.$nextTick();
 
-    expect(wrapper.findComponent(DesktopWindow).exists()).toBe(true);
+      expect(wrapper.findComponent(DesktopWindow).exists()).toBe(true);
+    });
+
+    it('shows the title of the clicked icon', async () => {
+      wrapper.findComponent(DesktopIcon).vm.$emit('click');
+      await wrapper.vm.$nextTick();
+
+
+    });
+
   });
 
   it('closes window', async () => {
