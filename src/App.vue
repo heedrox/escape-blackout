@@ -1,16 +1,37 @@
 <template>
   <div id="app">
-    <Desktop></Desktop>
+    <Desktop v-if="state === 'LOGGED_IN'"></Desktop>
+    <div v-if="state === 'ERROR'">Se encontró un error haciendo login :(</div>
   </div>
 </template>
 
 <script>
 import Desktop from './components/Desktop.vue';
+import firebaseUtil from './lib/firebase/firebase-util';
+
+const STATES = {
+  INIT: 'INIT',
+  LOGGED_IN: 'LOGGED_IN',
+  ERROR: 'ERROR',
+};
 
 export default {
   name: 'App',
   components: {
     Desktop
+  },
+  data () {
+    return {
+      state: STATES.INIT,
+    };
+  },
+  async created() {
+    try {
+      await firebaseUtil.login();
+      this.state = STATES.LOGGED_IN;
+    } catch (error) {
+      this.state = STATES.ERROR;
+    }
   }
 }
 </script>
