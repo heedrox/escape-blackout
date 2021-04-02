@@ -31,9 +31,15 @@ describe('Desktop.vue', () => {
       wrapper.findComponent(DesktopIcon).vm.$emit('click');
       await wrapper.vm.$nextTick();
 
-
+      expect(wrapper.findComponent(DesktopWindow).props('title')).toBe('Network');
     });
 
+    xit('shows the icon of the clicked icon - doesnt work because of require not working in tests', async () => {
+      wrapper.findComponent(DesktopIcon).vm.$emit('click');
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.findComponent(DesktopWindow).props('icon')).toBe('./puzzle-1/puzzle-1-icon.svg');
+    });
   });
 
   it('closes window', async () => {

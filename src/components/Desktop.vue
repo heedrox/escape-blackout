@@ -2,7 +2,9 @@
   <div>
     <desktop-icon text="Network" :icon="require('./puzzle-1/puzzle-1-icon.svg')"
     @click="clickDesktopIcon()"></desktop-icon>
-    <desktop-window v-if="showDesktopWindow" title="Hola caracola" @close="closeDesktopIcon">
+    <desktop-window
+        v-if="showDesktopWindow" title="Network" @close="closeDesktopIcon"
+        :icon="require('./puzzle-1/puzzle-1-icon.svg')">
     </desktop-window>
   </div>
 </template>
