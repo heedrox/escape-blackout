@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <desktop-icon text="Network" :icon="require('./components/puzzle-1/puzzle-1-icon.svg')"></desktop-icon>
+    <Desktop></Desktop>
   </div>
 </template>
 
 <script>
-import DesktopIcon from './components/DesktopIcon.vue';
+import Desktop from './components/Desktop.vue';
 
 export default {
   name: 'App',
   components: {
-    DesktopIcon
+    Desktop
   }
 }
 </script>
@@ -19,6 +19,9 @@ export default {
 body {
   padding: 0;
   margin: 0;
+  background-color: #000;
+  width: 100vw;
+  height: 100vh;
 }
 #app {
   font-family: Consolas, sans-serif;
@@ -26,8 +29,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #fff;
   background-color: #000;
-  height: 100vh;
-  width: 100vw;
+  height: 95vh;
+  width: 95vw;
   padding-left: 5vw;
   padding-top: 5vh;
   overflow: hidden;

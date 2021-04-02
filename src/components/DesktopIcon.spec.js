@@ -20,4 +20,15 @@ describe('DesktopIcon.vue', () => {
     expect(wrapper.find('img').exists()).toBe(true)
     expect(wrapper.find('img').attributes('src')).toMatch(icon)
   })
+  it('triggers click when image is clicked', async () => {
+    const icon = 'icon.png';
+    const wrapper = shallowMount(Icon, {
+      propsData: { icon }
+    });
+
+    wrapper.find('img').trigger('click');
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.emitted().click).toBeTruthy();
+  });
 })
