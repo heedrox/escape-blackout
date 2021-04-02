@@ -7,6 +7,9 @@
       <div class="desktop-window-toolbar-title">{{ title }}</div>
       <div class="close-handler" @click="clickCloseHandler()">X</div>
     </div>
+    <div class="desktop-window-body">
+      <puzzle-1 />
+    </div>
   </div>
 </template>
 <style scoped>
@@ -56,9 +59,12 @@
 }
 </style>
 <script>
+import Puzzle1 from './puzzle-1/Puzzle1'
+
 export default {
   name: 'desktop-window',
   emits: [ 'close' ],
+  components: { Puzzle1 },
   props: {
     title: {
       type: String,
