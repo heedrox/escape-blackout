@@ -36,6 +36,18 @@ describe('Puzzle 1', () => {
     expect(puzzle1.findAll('.handle').length).toEqual(8);
   });
 
+  it('sets size of class when instantiates (3)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXX', 'XXX', 'XXX'])
+
+    expect(puzzle1.find('.panel-3').exists()).toBeTruthy();
+  });
+
+  it('sets size of class when instantiates (4)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XXXX', 'XXXX', 'XXXX'])
+
+    expect(puzzle1.find('.panel-4').exists()).toBeTruthy();
+  });
+
   describe('inverts Xs and Os through handles', () => {
 
     const aTest = (input, handle, expected) => ({input, handle, expected});

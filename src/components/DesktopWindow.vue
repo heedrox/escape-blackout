@@ -8,7 +8,7 @@
       <div class="close-handler" @click="clickCloseHandler()">X</div>
     </div>
     <div class="desktop-window-body">
-      <puzzle-1 />
+      <puzzle-1 :initial-status="[ 'XXXX', 'XXXX', 'XXXX', 'XXXX' ]"/>
     </div>
   </div>
 </template>
