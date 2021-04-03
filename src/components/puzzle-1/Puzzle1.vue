@@ -6,17 +6,17 @@
       <div class="cell handle handle-2" @click="clickHandle('col2')">-</div>
       <div class="cell handle handle-3" @click="clickHandle('col3')">-</div>
       <div class="cell handle handle-a" @click="clickHandle('row1')">-</div>
-      <div class="cell">X</div>
-      <div class="cell">X</div>
-      <div class="cell">X</div>
+      <div class="cell transistor" :class="{ success : isSuccess(0, 0) }">{{ status[0][0] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(0, 1) }">{{ status[0][1] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(0, 2) }">{{ status[0][2] }}</div>
       <div class="cell handle handle-b" @click="clickHandle('row2')">-</div>
-      <div class="cell">X</div>
-      <div class="cell success">O</div>
-      <div class="cell">X</div>
+      <div class="cell transistor" :class="{ success : isSuccess(1, 0) }">{{ status[1][0] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(1, 1) }">{{ status[1][1] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(1, 2) }">{{ status[1][2] }}</div>
       <div class="cell handle handle-c" @click="clickHandle('row3')">-</div>
-      <div class="cell success">O</div>
-      <div class="cell">X</div>
-      <div class="cell">X</div>
+      <div class="cell transistor" :class="{ success : isSuccess(2, 0) }">{{ status[2][0] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(2, 1) }">{{ status[2][1] }}</div>
+      <div class="cell transistor" :class="{ success : isSuccess(2, 2) }">{{ status[2][2] }}</div>
     </div>
   </div>
 </template>
@@ -78,6 +78,9 @@ export default {
         this.status = invertByCol(this.status, 3);
       }
     },
+    isSuccess(numRow, numCol) {
+      return this.status[numRow].split('')[numCol] === 'O';
+    }
   },
 };
 </script>
