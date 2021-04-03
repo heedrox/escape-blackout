@@ -12,6 +12,30 @@ describe('Puzzle 1', () => {
     expect(puzzle1.vm.status).toEqual(['XXXX', 'XOOX', 'OOOX', 'OOOO']);
   });
 
+  it('creates the right amount of transistors (when 3)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXX', 'XXX', 'XXX'])
+
+    expect(puzzle1.findAll('.transistor').length).toEqual(9);
+  });
+
+  it('creates the right amount of transistors (when 4)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XXXX', 'XXXX', 'XXXX'])
+
+    expect(puzzle1.findAll('.transistor').length).toEqual(16);
+  });
+
+  it('creates the right amount of handlers (when 3)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXX', 'XXX', 'XXX'])
+
+    expect(puzzle1.findAll('.handle').length).toEqual(6);
+  });
+
+  it('creates the right amount of handlers (when 4)', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XXXX', 'XXXX', 'XXXX'])
+
+    expect(puzzle1.findAll('.handle').length).toEqual(8);
+  });
+
   describe('inverts Xs and Os through handles', () => {
 
     const aTest = (input, handle, expected) => ({input, handle, expected});
@@ -22,6 +46,8 @@ describe('Puzzle 1', () => {
       aTest(['XOX', 'XXO', 'OXX'], '.handle-1', ['OOX', 'OXO', 'XXX']),
       aTest(['XOX', 'XXO', 'OXX'], '.handle-2', ['XXX', 'XOO', 'OOX']),
       aTest(['XOX', 'XXO', 'OXX'], '.handle-3', ['XOO', 'XXX', 'OXO']),
+      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-d', ['XXXX', 'XXXX', 'XXXX', 'OOOO']),
+      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-4', ['XXXO', 'XXXO', 'XXXO', 'XXXO']),
     ];
 
     TEST_CASES.forEach((testCase) => {

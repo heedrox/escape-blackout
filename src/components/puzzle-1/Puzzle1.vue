@@ -5,18 +5,28 @@
       <div class="cell handle handle-1" @click="clickHandle('col1')">-</div>
       <div class="cell handle handle-2" @click="clickHandle('col2')">-</div>
       <div class="cell handle handle-3" @click="clickHandle('col3')">-</div>
+      <div v-if="numTransistors >= 4" class="cell handle handle-4" @click="clickHandle('col4')">-</div>
       <div class="cell handle handle-a" @click="clickHandle('row1')">-</div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 0) }">{{ status[0][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 1) }">{{ status[0][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 2) }">{{ status[0][2] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
       <div class="cell handle handle-b" @click="clickHandle('row2')">-</div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 0) }">{{ status[1][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 1) }">{{ status[1][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 2) }">{{ status[1][2] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
       <div class="cell handle handle-c" @click="clickHandle('row3')">-</div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 0) }">{{ status[2][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 1) }">{{ status[2][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 2) }">{{ status[2][2] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
+      <div v-if="numTransistors >= 4" class="cell handle handle-d" @click="clickHandle('row4')">-</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
+      <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
+
     </div>
   </div>
 </template>
@@ -43,17 +53,7 @@
 }
 </style>
 <script>
-
-const invertLetter = letter => letter === 'X' ? 'O' : 'X';
-
-const invertRow = (str) => str.split('').map(invertLetter).join('');
-const invertOnlyOneRow = (numRow) => (row, idx) => idx === (numRow - 1) ? invertRow(row) : row;
-const invertByRow = (status, numRow) => status.map(invertOnlyOneRow(numRow));
-
-const invertOnlyOneLetter = numCol =>  (letter, idx) => idx === (numCol-1) ? invertLetter(letter) : letter;
-const invertOneColInRow = numCol => (row) => row.split('').map(invertOnlyOneLetter(numCol)).join('')
-const invertByCol = (status, numCol) => status.map(invertOneColInRow(numCol));
-
+import Handlers from './Handlers';
 
 export default {
   name: 'puzzle-1',
@@ -61,6 +61,11 @@ export default {
     initialStatus: {
       type: Array,
       default: () => ['XXX', 'XXX', 'XXX'],
+    },
+  },
+  computed: {
+    numTransistors () {
+      return this.initialStatus.length;
     },
   },
   data () {
@@ -73,19 +78,7 @@ export default {
   },
   methods: {
     clickHandle(handle) {
-      if (handle === 'row1') {
-        this.status = invertByRow(this.status, 1);
-      } else if (handle === 'row2') {
-        this.status = invertByRow(this.status, 2);
-      } else if (handle === 'row3') {
-        this.status = invertByRow(this.status, 3);
-      } else if (handle === 'col1') {
-        this.status = invertByCol(this.status, 1);
-      } else if (handle === 'col2') {
-        this.status = invertByCol(this.status, 2);
-      } else if (handle === 'col3') {
-        this.status = invertByCol(this.status, 3);
-      }
+      this.status = Handlers.execute(this.status, handle);
     },
     isSuccess(numRow, numCol) {
       return this.status[numRow].split('')[numCol] === 'O';
