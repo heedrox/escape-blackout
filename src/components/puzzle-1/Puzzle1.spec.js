@@ -52,14 +52,14 @@ describe('Puzzle 1', () => {
 
     const aTest = (input, handle, expected) => ({input, handle, expected});
     const TEST_CASES = [
-      aTest(['XXX', 'XOX', 'OXX'], '.handle-a', ['OOO', 'XOX', 'OXX']),
-      aTest(['XOX', 'XXO', 'OXX'], '.handle-b', ['XOX', 'OOX', 'OXX']),
-      aTest(['XOX', 'XXO', 'OXX'], '.handle-c', ['XOX', 'XXO', 'XOO']),
-      aTest(['XOX', 'XXO', 'OXX'], '.handle-1', ['OOX', 'OXO', 'XXX']),
-      aTest(['XOX', 'XXO', 'OXX'], '.handle-2', ['XXX', 'XOO', 'OOX']),
-      aTest(['XOX', 'XXO', 'OXX'], '.handle-3', ['XOO', 'XXX', 'OXO']),
-      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-d', ['XXXX', 'XXXX', 'XXXX', 'OOOO']),
-      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-4', ['XXXO', 'XXXO', 'XXXO', 'XXXO']),
+      aTest(['XXX', 'XOX', 'OXX'], '.handle-row1', ['OOO', 'XOX', 'OXX']),
+      aTest(['XOX', 'XXO', 'OXX'], '.handle-row2', ['XOX', 'OOX', 'OXX']),
+      aTest(['XOX', 'XXO', 'OXX'], '.handle-row3', ['XOX', 'XXO', 'XOO']),
+      aTest(['XOX', 'XXO', 'OXX'], '.handle-col1', ['OOX', 'OXO', 'XXX']),
+      aTest(['XOX', 'XXO', 'OXX'], '.handle-col2', ['XXX', 'XOO', 'OOX']),
+      aTest(['XOX', 'XXO', 'OXX'], '.handle-col3', ['XOO', 'XXX', 'OXO']),
+      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-row4', ['XXXX', 'XXXX', 'XXXX', 'OOOO']),
+      aTest(['XXXX', 'XXXX', 'XXXX', 'XXXX'], '.handle-col4', ['XXXO', 'XXXO', 'XXXO', 'XXXO']),
     ];
 
     TEST_CASES.forEach((testCase) => {
@@ -114,6 +114,22 @@ describe('Puzzle 1', () => {
 
         expect(puzzle1.findAll('.transistor').at(testCase.expectedPosition).classes('success'))
           .toBe(testCase.expectedSuccess);
+      });
+    });
+  });
+
+  describe('Handles turn', () => {
+
+    const HANDLES = [ 'row1', 'row2', 'row3', 'row4', 'col1', 'col2', 'col3', 'col4'];
+
+    HANDLES.forEach(handle => {
+      it(`changes to | when - ${handle}`, async () => {
+        const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XXXX', 'XXXX', 'XXXX'])
+
+        puzzle1.find(`.handle-${handle}`).trigger('click');
+        await puzzle1.vm.$nextTick();
+
+        expect(puzzle1.find(`.handle-${handle}`).text()).toEqual('|');
       });
     });
   });
