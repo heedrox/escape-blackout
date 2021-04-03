@@ -57,10 +57,19 @@ const invertByCol = (status, numCol) => status.map(invertOneColInRow(numCol));
 
 export default {
   name: 'puzzle-1',
+  props: {
+    initialStatus: {
+      type: Array,
+      default: () => ['XXX', 'XXX', 'XXX'],
+    },
+  },
   data () {
     return {
-      status: ['XXX', 'XXX', 'XXX'],
+      status: [],
     };
+  },
+  created() {
+    this.status = this.initialStatus;
   },
   methods: {
     clickHandle(handle) {

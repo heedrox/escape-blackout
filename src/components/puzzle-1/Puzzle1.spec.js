@@ -1,7 +1,17 @@
 import { shallowMount } from '@vue/test-utils';
 import Puzzle1 from './Puzzle1';
 
+const givenAPuzzleWithInitialStatus = (initialStatus) => shallowMount(Puzzle1, {
+  propsData: { initialStatus },
+});
+
 describe('Puzzle 1', () => {
+  it('instantiates with a initial status', () => {
+    const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XOOX', 'OOOX', 'OOOO'])
+
+    expect(puzzle1.vm.status).toEqual(['XXXX', 'XOOX', 'OOOX', 'OOOO']);
+  });
+
   describe('inverts Xs and Os through handles', () => {
 
     const aTest = (input, handle, expected) => ({input, handle, expected});
@@ -16,8 +26,7 @@ describe('Puzzle 1', () => {
 
     TEST_CASES.forEach((testCase) => {
       it(`changes when pressed handle ${testCase.handle}`, async () => {
-        const puzzle1 = shallowMount(Puzzle1);
-        puzzle1.vm.status = testCase.input;
+        const puzzle1 = givenAPuzzleWithInitialStatus(testCase.input)
 
         puzzle1.find(testCase.handle).trigger('click');
         await puzzle1.vm.$nextTick();
@@ -56,20 +65,14 @@ describe('Puzzle 1', () => {
 
     TEST_CASES.forEach((testCase) => {
       it(`shows the transistor at position ${testCase.expectedPosition}`, async () => {
-        const puzzle1 = shallowMount(Puzzle1);
-
-        puzzle1.vm.status = testCase.input;
-        await puzzle1.vm.$nextTick();
+        const puzzle1 = givenAPuzzleWithInitialStatus(testCase.input)
 
         expect(puzzle1.findAll('.transistor').at(testCase.expectedPosition).text())
           .toMatch(testCase.expectedValue);
       });
 
       it(`shows a hint as the class at position ${testCase.expectedPosition}`, async () => {
-        const puzzle1 = shallowMount(Puzzle1);
-
-        puzzle1.vm.status = testCase.input;
-        await puzzle1.vm.$nextTick();
+        const puzzle1 = givenAPuzzleWithInitialStatus(testCase.input)
 
         expect(puzzle1.findAll('.transistor').at(testCase.expectedPosition).classes('success'))
           .toBe(testCase.expectedSuccess);
