@@ -23,6 +23,7 @@
   border: solid 2px #999;
   border-radius: 3px;
   box-shadow: 2px 2px 2vw 1vw rgba(255, 255, 255, 0.4);
+  animation: show-desktop-window 0.2s ease-in-out;
 }
 
 .desktop-window-toolbar {
@@ -56,6 +57,16 @@
   padding-right: 1vw;
   flex: 1 1 0;
   font-weight: bold;
+  max-width: 5vw;
+}
+
+@keyframes show-desktop-window {
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 </style>
 <script>
