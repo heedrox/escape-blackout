@@ -12,14 +12,17 @@ const GAME_CODE = 'codigo-juego-1';
 
 const FIREBASE_URL = `/escape-blackout/${GAME_CODE}`;
 
+const init = () => {
+  if (isTestEnv()) throw Error('Firebase should not be executed on test environment.');
+  firebase.initializeApp(dbOptions);
+  auth = firebase.auth();
+  firestore = firebase.firestore();
+  console.log('inicializado');
+};
+
+init();
+
 const firebaseUtil = {
-  init: () => {
-    if (isTestEnv()) throw Error('Firebase should not be executed on test environment.');
-    firebase.initializeApp(dbOptions);
-    auth = firebase.auth();
-    firestore = firebase.firestore();
-    console.log('inicializado');
-  },
   login: () => auth.signInWithEmailAndPassword(dbOptions.customEscape.auth.email, dbOptions.customEscape.auth.password),
   doc: (path) => firestore.doc(`${FIREBASE_URL}${path}`),
 };
