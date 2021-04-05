@@ -66,6 +66,7 @@ import firebaseUtil from '../../lib/firebase/firebase-util';
 
 export default {
   name: 'puzzle-1-stage',
+  emits: ['success'],
   props: {
     initialStatus: {
       type: Array,
@@ -103,10 +104,17 @@ export default {
     clickHandle(handle) {
       this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
       this.status = Handlers.execute(this.status, handle);
+      if (this.isBoardCompleted()) {
+        this.$emit('success');
+      }
     },
     isSuccess(numRow, numCol) {
       return this.status[numRow].split('')[numCol] === 'O';
-    }
+    },
+    isBoardCompleted() {
+      const byNotCompletedRow = r => r.indexOf('X') >= 0;
+      return !this.status.find(byNotCompletedRow);
+    },
   },
 };
 </script>
