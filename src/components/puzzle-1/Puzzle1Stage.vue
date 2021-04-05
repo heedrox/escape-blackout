@@ -105,7 +105,7 @@ export default {
       this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
       this.status = Handlers.execute(this.status, handle);
       if (this.isBoardCompleted()) {
-        this.$emit('success');
+        this.$emit('complete');
       }
     },
     isSuccess(numRow, numCol) {
