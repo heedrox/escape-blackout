@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import DesktopWindow from './DesktopWindow.vue'
+import Puzzle1 from './puzzle-1/Puzzle1';
 
 describe('DesktopWindow.vue', () => {
   it('renders the text', () => {
@@ -33,4 +34,10 @@ describe('DesktopWindow.vue', () => {
 
     expect(wrapper.emitted().close).toBeTruthy();
   })
+
+  it('opens puzzle 1', () => {
+    const wrapper = shallowMount(DesktopWindow);
+
+    expect(wrapper.findComponent(Puzzle1).exists()).toBeTruthy();
+  });
 })
