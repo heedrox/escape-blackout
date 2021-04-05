@@ -48,4 +48,21 @@ describe('Puzzle 1', () => {
       'XOXO', 'OXOX', 'XOXO', 'OXOX',
     ]);
   });
+
+  describe('Stage Transitions', () => {
+    it('shows the MEDIUM puzzle stage, after EASY puzzle stage has been completed', async () => {
+      jest.mock('@/lib/get-num-player.js');
+      GetNumPlayer.get = jest.fn(() => 1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theMediumStage.vm.initialStatus.length).toEqual(4);
+    });
+  });
 })

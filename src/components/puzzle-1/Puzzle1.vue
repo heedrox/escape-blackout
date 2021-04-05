@@ -1,7 +1,8 @@
 <template>
   <div>
-    <puzzle-1-stage v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']"/>
-    <puzzle-1-stage v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']"/>
+    {{myStage}}
+    <puzzle-1-stage key="puzzle1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage()"/>
+    <puzzle-1-stage key="puzzle2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']"/>
   </div>
 </template>
 <script>
@@ -30,5 +31,11 @@ export default {
       puzzleStatus: firebaseUtil.doc('/puzzle-status/puzzle-1'),
     };
   },
+  methods: {
+    completeStage() {
+      // this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: 2 });
+      this.puzzleStatus['stagePlayer1'] = 2;
+    }
+  }
 };
 </script>

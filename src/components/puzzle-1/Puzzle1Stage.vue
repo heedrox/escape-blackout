@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="test">{{gameStatus}}x</div>
+    <div class="test">{{initialStatus}}x</div>
+    <div class="test">{{status}}x</div>
     <div :class="[ 'panel', `panel-${numTransistors}` ]">
       <div class="cell" :class="{ }"></div>
       <div class="cell handle handle-col1" @click="clickHandle('col1')">{{ handles['col1'] }}</div>
@@ -109,6 +110,7 @@ export default {
       }
     },
     isSuccess(numRow, numCol) {
+      if (typeof this.status[numRow] === 'undefined') return false;
       return this.status[numRow].split('')[numCol] === 'O';
     },
     isBoardCompleted() {
