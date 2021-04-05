@@ -65,7 +65,7 @@ import Handlers from './Handlers';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 
 export default {
-  name: 'puzzle-1',
+  name: 'puzzle-1-stage',
   props: {
     initialStatus: {
       type: Array,

@@ -8,7 +8,7 @@
       <div class="close-handler" @click="clickCloseHandler()">X</div>
     </div>
     <div class="desktop-window-body">
-      <puzzle-1 :initial-status="[ 'XXXX', 'XXXX', 'XXXX', 'XXXX' ]"/>
+      <puzzle-1-stage :initial-status="[ 'XXXX', 'XXXX', 'XXXX', 'XXXX' ]"/>
     </div>
   </div>
 </template>
@@ -70,12 +70,12 @@
 }
 </style>
 <script>
-import Puzzle1 from './puzzle-1/Puzzle1'
+import Puzzle1Stage from './puzzle-1/Puzzle1Stage'
 
 export default {
   name: 'desktop-window',
   emits: [ 'close' ],
-  components: { Puzzle1 },
+  components: { Puzzle1Stage },
   props: {
     title: {
       type: String,

@@ -1,11 +1,11 @@
 import { shallowMount } from '@vue/test-utils';
-import Puzzle1 from './Puzzle1';
+import Puzzle1Stage from './Puzzle1Stage';
 
-const givenAPuzzleWithInitialStatus = (initialStatus) => shallowMount(Puzzle1, {
+const givenAPuzzleWithInitialStatus = (initialStatus) => shallowMount(Puzzle1Stage, {
   propsData: { initialStatus },
 });
 
-describe('Puzzle 1', () => {
+describe('Puzzle 1 Stage', () => {
   it('instantiates with a initial status', () => {
     const puzzle1 = givenAPuzzleWithInitialStatus(['XXXX', 'XOOX', 'OOOX', 'OOOO'])
 
