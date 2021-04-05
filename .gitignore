@@ -2,6 +2,8 @@
 node_modules
 /dist
 db-options.js
+db-test-options.js
+.firebaserc
 
 # local env files
 .env.local

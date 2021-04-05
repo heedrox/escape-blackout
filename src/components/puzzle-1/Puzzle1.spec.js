@@ -102,14 +102,14 @@ describe('Puzzle 1', () => {
     ];
 
     TEST_CASES.forEach((testCase) => {
-      it(`shows the transistor at position ${testCase.expectedPosition}`, async () => {
+      it(`shows the transistor at position ${testCase.expectedPosition}`, () => {
         const puzzle1 = givenAPuzzleWithInitialStatus(testCase.input)
 
         expect(puzzle1.findAll('.transistor').at(testCase.expectedPosition).text())
           .toMatch(testCase.expectedValue);
       });
 
-      it(`shows a hint as the class at position ${testCase.expectedPosition}`, async () => {
+      it(`shows a hint as the class at position ${testCase.expectedPosition}`, () => {
         const puzzle1 = givenAPuzzleWithInitialStatus(testCase.input)
 
         expect(puzzle1.findAll('.transistor').at(testCase.expectedPosition).classes('success'))
@@ -133,5 +133,4 @@ describe('Puzzle 1', () => {
       });
     });
   });
-
 });

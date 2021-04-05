@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="test">{{gameStatus}}x</div>
     <div :class="[ 'panel', `panel-${numTransistors}` ]">
       <div class="cell" :class="{ }"></div>
       <div class="cell handle handle-col1" @click="clickHandle('col1')">{{ handles['col1'] }}</div>
@@ -61,6 +62,7 @@
 </style>
 <script>
 import Handlers from './Handlers';
+import firebaseUtil from '../../lib/firebase/firebase-util';
 
 export default {
   name: 'puzzle-1',
@@ -88,7 +90,11 @@ export default {
         'col3': '-',
         'col4': '-',
       },
+      gameStatus: { },
     };
+  },
+  firestore: {
+    gameStatus: firebaseUtil.doc('/'),
   },
   created() {
     this.status = this.initialStatus;
