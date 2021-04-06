@@ -33,8 +33,7 @@ export default {
   },
   methods: {
     completeStage() {
-      // this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: 2 });
-      this.puzzleStatus['stagePlayer1'] = 2;
+      this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: 2 });
     }
   }
 };

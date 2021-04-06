@@ -17,6 +17,13 @@ const MockVueFire = {
             const [key, value] = entry;
             this[key] = value;
           }));
+          this.$firestoreRefs = {};
+          Object.keys(result).forEach((key => {
+            this.$firestoreRefs[key] = {
+              set: jest.fn(newValue => { this[key] = newValue; }),
+              update: jest.fn(newValue => { this[key] = newValue; }),
+            };
+          }));
         }
       }
     });

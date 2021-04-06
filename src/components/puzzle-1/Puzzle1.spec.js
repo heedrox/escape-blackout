@@ -8,53 +8,39 @@ import GetNumPlayer from '../../lib/get-num-player.js';
 
 Vue.use(MockVueFire);
 
+const aTest = (numPlayer, puzzleStatus, expectedStatus, expectedPuzzle) =>
+  ({numPlayer, puzzleStatus, expectedStatus, expectedPuzzle});
+
+const givenPlayerNumber = (playerNumber) => {
+  jest.mock('@/lib/get-num-player.js');
+  GetNumPlayer.get = jest.fn(() => playerNumber);
+};
+
 describe('Puzzle 1', () => {
-  it('shows the EASY (3 transistors) puzzle stage', () => {
-    jest.mock('@/lib/get-num-player.js');
-    GetNumPlayer.get = jest.fn(() => 1);
-    const puzzle1 = shallowMount(Puzzle1);
+  describe('When initialized', () => {
+    const TEST_CASES = [
+      aTest(1, { }, ['XOO', 'OXX', 'XOO'], 'EASY'),
+      aTest(1, { 'stagePlayer1': 2 }, ['XOXO', 'OXOX', 'XOXO', 'OXOX'], 'MEDIUM'),
+      aTest(2, { 'stagePlayer2': 2 }, ['XOXO', 'OXOX', 'XOXO', 'OXOX'], 'MEDIUM')
+    ];
 
-    const theStage = puzzle1.findComponent(Puzzle1Stage);
+    TEST_CASES.forEach(tc => {
+      it.only(`shows the ${tc.expectedPuzzle} puzzle when numplayer ${tc.numPlayer}`, () => {
+        givenPlayerNumber(tc.numPlayer);
+        firebaseUtil.doc.mockImplementation(() => (tc.puzzleStatus));
 
-    expect(theStage.vm.initialStatus).toEqual([
-      'XOO', 'OXX', 'XOO'
-    ]);
+        const puzzle1 = shallowMount(Puzzle1);
+
+        const theStage = puzzle1.findComponent(Puzzle1Stage);
+        expect(theStage.vm.initialStatus).toEqual(tc.expectedStatus);
+      });
+    });
   });
 
-  it('shows the MEDIUM (4 transistors + monoplayer) puzzle stage', () => {
-    jest.mock('@/lib/get-num-player.js');
-    GetNumPlayer.get = jest.fn(() => 1);
-    firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
-
-    const puzzle1 = shallowMount(Puzzle1);
-
-    const theStage = puzzle1.findComponent(Puzzle1Stage);
-
-    expect(theStage.vm.initialStatus).toEqual([
-      'XOXO', 'OXOX', 'XOXO', 'OXOX',
-    ]);
-  });
-
-  it('shows the MEDIUM puzzle stage, if player 2 is in stage 2', () => {
-    jest.mock('@/lib/get-num-player.js');
-    GetNumPlayer.get = jest.fn(() => 2);
-    firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer2': 2 }));
-
-    const puzzle1 = shallowMount(Puzzle1);
-
-    const theStage = puzzle1.findComponent(Puzzle1Stage);
-
-    expect(theStage.vm.initialStatus).toEqual([
-      'XOXO', 'OXOX', 'XOXO', 'OXOX',
-    ]);
-  });
-
-  describe('Stage Transitions', () => {
+  describe('When advancing stage', () => {
     it('shows the MEDIUM puzzle stage, after EASY puzzle stage has been completed', async () => {
-      jest.mock('@/lib/get-num-player.js');
-      GetNumPlayer.get = jest.fn(() => 1);
+      givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
-
       const puzzle1 = shallowMount(Puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
@@ -63,6 +49,19 @@ describe('Puzzle 1', () => {
 
       const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
       expect(theMediumStage.vm.initialStatus.length).toEqual(4);
+    });
+
+    it('persists data in firestore, after EASY puzzle stage has been completed', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      expect(puzzle1.vm.$firestoreRefs.puzzleStatus.update.mock.calls.length).toBe(1);
     });
   });
 })
