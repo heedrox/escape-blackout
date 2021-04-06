@@ -93,6 +93,7 @@ export default {
         'col4': '-',
       },
       gameStatus: { },
+      multiplayer: false,
     };
   },
   firestore: {
