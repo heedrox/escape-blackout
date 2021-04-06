@@ -73,6 +73,10 @@ export default {
       type: Array,
       default: () => ['XXX', 'XXX', 'XXX'],
     },
+    blockHandles: {
+      type: String,
+      default: () => '',
+    }
   },
   computed: {
     numTransistors () {
@@ -93,7 +97,6 @@ export default {
         'col4': '-',
       },
       gameStatus: { },
-      multiplayer: false,
     };
   },
   firestore: {
