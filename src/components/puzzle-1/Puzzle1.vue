@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{myStage}}
     <puzzle-1-stage key="puzzle1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage()"/>
     <puzzle-1-stage key="puzzle2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']"/>
   </div>

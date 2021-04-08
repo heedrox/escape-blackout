@@ -35,3 +35,17 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### NEXT TODO (sesión con guille)
+
+- si prop block-handles = COL, entonces no puedes mover los cols.
+- si prop block-handles = ROW, entonces no puedes mover las rows.
+- al cumplir el 2o stage, abrir el 3er stage.
+- si eres el jugador 1, no puedes mover COLS
+- si eres el jugador 2, no puedes mover ROWS.
+- en el stage 1 y 2, el estado no es persistido.
+- el el stage 3, el estado es persistido (el jugador 1 y 2 ven lo mismo)
+- cuando el estado es "persistido", solo puede tocar el jugador que tiene el turno: cuando no es tu turno, todo está bloqueado. si es tu turno, puedes mover o COLS / ROWS.
+- al cumplir el stage 3, se desbloquea el chat, y el puzle 2.
+
+

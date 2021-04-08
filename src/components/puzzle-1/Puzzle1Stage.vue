@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div class="test">{{initialStatus}}x</div>
-    <div class="test">{{status}}x</div>
     <div :class="[ 'panel', `panel-${numTransistors}` ]">
       <div class="cell" :class="{ }"></div>
       <div class="cell handle handle-col1" @click="clickHandle('col1')">{{ handles['col1'] }}</div>

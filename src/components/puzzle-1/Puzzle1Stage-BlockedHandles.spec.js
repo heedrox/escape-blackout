@@ -10,13 +10,21 @@ describe('Puzzle 1 Stage can block some handles', () => {
     expect(puzzle1.vm.blockHandles).toEqual('');
   });
 
-  it('blocks COL handles', () => {
+  xit('blocks COL handles', async () => {
+    //WIP
     const puzzle1 = shallowMount(Puzzle1Stage, {
-      propsData: { blockHandles: 'COL' },
+      propsData: {
+        initialStatus: ['XXX', 'XXX', 'XXX'],
+        blockHandles: 'COL'
+      },
     });
 
-    expect(puzzle1.vm.blockHandles).toEqual('COL');
+    puzzle1.find('.handle-col1').trigger('click');
+    await puzzle1.vm.$nextTick();
 
+    expect(puzzle1.vm.status).toEqual([
+      'XXX', 'XXX', 'XXX'
+    ]);
   })
 
 });
