@@ -51,6 +51,20 @@ describe('Puzzle 1', () => {
       expect(theMediumStage.vm.initialStatus.length).toEqual(4);
     });
 
+    it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      const theHardStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theHardStage.vm.initialStatus.length).toEqual(4);
+      expect(theHardStage.vm.blockHandles).not.toEqual('');
+    });
+
     it('persists data in firestore, after EASY puzzle stage has been completed', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
