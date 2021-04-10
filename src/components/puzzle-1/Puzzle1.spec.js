@@ -60,9 +60,22 @@ describe('Puzzle 1', () => {
   });
 
   describe('When advancing stage', () => {
-    it('shows the MEDIUM puzzle stage, after EASY puzzle stage has been completed', async () => {
+    it('shows the MEDIUM puzzle stage, when player 1, after EASY puzzle stage has been completed', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theMediumStage.vm.initialStatus.length).toEqual(4);
+    });
+
+    it('shows the MEDIUM puzzle stage, when player 2, after EASY puzzle stage has been completed', async () => {
+      givenPlayerNumber(2);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer2': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
