@@ -25,7 +25,7 @@ describe('Puzzle 1', () => {
     ];
 
     TEST_CASES.forEach(tc => {
-      it.only(`shows the ${tc.expectedPuzzle} puzzle when numplayer ${tc.numPlayer}`, () => {
+      it(`shows the ${tc.expectedPuzzle} puzzle when numplayer ${tc.numPlayer}`, () => {
         givenPlayerNumber(tc.numPlayer);
         firebaseUtil.doc.mockImplementation(() => (tc.puzzleStatus));
 
