@@ -58,7 +58,7 @@ describe('Puzzle 1', () => {
 
     })
 
-    it('does not persist the stage status for the EASY stage', () => {
+    xit('does not persist the stage status for the EASY stage', () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
 
