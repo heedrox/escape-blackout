@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     clickHandle(handle) {
-      if (this.blockHandles !== 'COL' && this.blockHandles !== 'ROW') {
+      if (this.blockHandles === '' || !handle.startsWith(this.blockHandles.toLowerCase())) {
         this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
         this.status = Handlers.execute(this.status, handle);
         if (this.isBoardCompleted()) {
