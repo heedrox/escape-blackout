@@ -26,6 +26,22 @@ describe('Puzzle 1 Stage can block some handles', () => {
     ]);
   })
 
+  it('inverts row transistors when blocked COL handles', async () => {
+    const puzzle1 = shallowMount(Puzzle1Stage, {
+      propsData: {
+        initialStatus: ['XXX', 'XXX', 'XXX'],
+        blockHandles: 'COL'
+      },
+    });
+
+    puzzle1.find('.handle-row1').trigger('click');
+    await puzzle1.vm.$nextTick();
+
+    expect(puzzle1.vm.status).toEqual([
+      'OOO', 'XXX', 'XXX'
+    ]);
+  })
+
   it('blocks ROW handles', async () => {
     const puzzle1 = shallowMount(Puzzle1Stage, {
       propsData: {
