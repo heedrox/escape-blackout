@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     clickHandle(handle) {
-      if (this.blockHandles !== 'COL') {
+      if (this.blockHandles !== 'COL' && this.blockHandles !== 'ROW') {
         this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
         this.status = Handlers.execute(this.status, handle);
         if (this.isBoardCompleted()) {
