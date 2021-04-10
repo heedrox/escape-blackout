@@ -57,6 +57,16 @@ describe('Puzzle 1', () => {
       expect(theStage.vm.blockHandles).toEqual('COL');
 
     })
+
+    it('does not persist the stage status for the EASY stage', () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theStage.vm.persistStatus).toEqual(false);
+    })
   });
 
   describe('When advancing stage', () => {
@@ -113,4 +123,5 @@ describe('Puzzle 1', () => {
       expect(puzzle1.vm.$firestoreRefs.puzzleStatus.update.mock.calls.length).toBe(1);
     });
   });
+
 })
