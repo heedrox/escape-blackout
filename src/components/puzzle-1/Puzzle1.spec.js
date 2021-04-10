@@ -35,6 +35,17 @@ describe('Puzzle 1', () => {
         expect(theStage.vm.initialStatus).toEqual(tc.expectedStatus);
       });
     });
+
+    it('blocks ROW handles when player is 2, and stage is HARD', () => {
+      givenPlayerNumber(2);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer2: 3 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theStage.vm.blockHandles).toEqual('ROW');
+
+    })
   });
 
   describe('When advancing stage', () => {
