@@ -12,21 +12,21 @@ import GetNumPlayer from '../../lib/get-num-player';
 
 export default {
   name: 'Puzzle1',
-  components: { Puzzle1Stage, },
+  components: {Puzzle1Stage,},
   computed: {
-    myStage () {
+    myStage() {
       const numPlayer = GetNumPlayer.get();
       if (this.puzzleStatus.notloaded) return null;
-      const theStage =  this.puzzleStatus[`stagePlayer${numPlayer}`];
+      const theStage = this.puzzleStatus[`stagePlayer${numPlayer}`];
       return theStage ? theStage : 1;
     },
-    blockHandles () {
+    blockHandles() {
       return GetNumPlayer.get() === 1 ? 'COL' : 'ROW';
     }
   },
   data() {
     return {
-      puzzleStatus: { notloaded: true },
+      puzzleStatus: {notloaded: true},
     };
   },
   firestore() {
@@ -36,7 +36,8 @@ export default {
   },
   methods: {
     completeStage(numStage) {
-      this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: numStage + 1 });
+      const key = `stagePlayer${GetNumPlayer.get()}`;
+      this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
     }
   }
 };
