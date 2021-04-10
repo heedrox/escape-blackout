@@ -1,7 +1,8 @@
 <template>
   <div>
-    <puzzle-1-stage key="puzzle1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage()"/>
-    <puzzle-1-stage key="puzzle2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']"/>
+    <puzzle-1-stage key="puzzleEasy" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage(1)"/>
+    <puzzle-1-stage key="puzzleMedium" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" @complete="completeStage(2)"/>
+    <puzzle-1-stage key="puzzleHard" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" block-handles="COL"/>
   </div>
 </template>
 <script>
@@ -31,8 +32,8 @@ export default {
     };
   },
   methods: {
-    completeStage() {
-      this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: 2 });
+    completeStage(numStage) {
+      this.$firestoreRefs.puzzleStatus.update( { stagePlayer1: numStage + 1 });
     }
   }
 };
