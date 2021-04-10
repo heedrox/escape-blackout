@@ -37,9 +37,10 @@
   height: 70vh;
   margin-top: 8vh;
   margin-left: 18vw;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
 }
+
 .panel .cell {
   text-align: center;
   outline: solid 1px #900;
@@ -77,11 +78,11 @@ export default {
     }
   },
   computed: {
-    numTransistors () {
+    numTransistors() {
       return this.initialStatus.length;
     },
   },
-  data () {
+  data() {
     return {
       status: [],
       handles: {
@@ -94,7 +95,7 @@ export default {
         'col3': '-',
         'col4': '-',
       },
-      gameStatus: { },
+      gameStatus: {},
     };
   },
   firestore: {
@@ -105,10 +106,12 @@ export default {
   },
   methods: {
     clickHandle(handle) {
-      this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
-      this.status = Handlers.execute(this.status, handle);
-      if (this.isBoardCompleted()) {
-        this.$emit('complete');
+      if (this.blockHandles !== 'COL') {
+        this.handles[handle] = this.handles[handle] === '-' ? '|' : '-';
+        this.status = Handlers.execute(this.status, handle);
+        if (this.isBoardCompleted()) {
+          this.$emit('complete');
+        }
       }
     },
     isSuccess(numRow, numCol) {

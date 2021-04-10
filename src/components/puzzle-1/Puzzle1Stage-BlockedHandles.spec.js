@@ -10,8 +10,7 @@ describe('Puzzle 1 Stage can block some handles', () => {
     expect(puzzle1.vm.blockHandles).toEqual('');
   });
 
-  xit('blocks COL handles', async () => {
-    //WIP
+  it('blocks COL handles', async () => {
     const puzzle1 = shallowMount(Puzzle1Stage, {
       propsData: {
         initialStatus: ['XXX', 'XXX', 'XXX'],
