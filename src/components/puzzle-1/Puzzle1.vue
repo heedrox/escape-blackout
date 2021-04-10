@@ -2,7 +2,7 @@
   <div>
     <puzzle-1-stage key="puzzle-stage1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage(1)"/>
     <puzzle-1-stage key="puzzle-stage2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" @complete="completeStage(2)"/>
-    <puzzle-1-stage key="puzzle-stage3" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" block-handles="COL"/>
+    <puzzle-1-stage key="puzzle-stage3" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" block-handles="ROW"/>
   </div>
 </template>
 <script>
