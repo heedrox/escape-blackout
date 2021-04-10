@@ -2,7 +2,7 @@
   <div>
     <puzzle-1-stage key="puzzle-stage1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" @complete="completeStage(1)"/>
     <puzzle-1-stage key="puzzle-stage2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" @complete="completeStage(2)"/>
-    <puzzle-1-stage key="puzzle-stage3" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" block-handles="ROW"/>
+    <puzzle-1-stage key="puzzle-stage3" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles"/>
   </div>
 </template>
 <script>
@@ -20,6 +20,9 @@ export default {
       const theStage =  this.puzzleStatus[`stagePlayer${numPlayer}`];
       return theStage ? theStage : 1;
     },
+    blockHandles () {
+      return GetNumPlayer.get() === 1 ? 'COL' : 'ROW';
+    }
   },
   data() {
     return {
