@@ -75,7 +75,11 @@ export default {
     blockHandles: {
       type: String,
       default: () => '',
-    }
+    },
+    persistStatus: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   computed: {
     numTransistors() {
@@ -98,8 +102,10 @@ export default {
       gameStatus: {},
     };
   },
-  firestore: {
-    gameStatus: firebaseUtil.doc('/'),
+  firestore() {
+    return {
+      gameStatus: firebaseUtil.doc('/'),
+    }
   },
   created() {
     this.status = this.initialStatus;
@@ -112,6 +118,7 @@ export default {
         if (this.isBoardCompleted()) {
           this.$emit('complete');
         }
+        this.$firestoreRefs.gameStatus.update({ commonStatus: this.status });
       }
     },
     isSuccess(numRow, numCol) {

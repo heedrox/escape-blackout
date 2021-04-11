@@ -58,7 +58,7 @@ describe('Puzzle 1', () => {
 
     })
 
-    xit('does not persist the stage status for the EASY stage', () => {
+    it('does not persist the stage status for the EASY stage', () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
 
@@ -66,7 +66,27 @@ describe('Puzzle 1', () => {
 
       const theStage = puzzle1.findComponent(Puzzle1Stage);
       expect(theStage.vm.persistStatus).toEqual(false);
-    })
+    });
+
+    it('does not persist the stage status for the MEDIUM stage', () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 2 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theStage.vm.persistStatus).toEqual(false);
+    });
+
+    it('does persist the stage status for the HARD stage', () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
+
+      const puzzle1 = shallowMount(Puzzle1);
+
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      expect(theStage.vm.persistStatus).toEqual(true);
+    });
   });
 
   describe('When advancing stage', () => {

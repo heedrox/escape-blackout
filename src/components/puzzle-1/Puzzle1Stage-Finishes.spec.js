@@ -1,5 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import Puzzle1Stage from './Puzzle1Stage';
+import Vue from 'vue';
+import MockVueFire from '../../test-utils/MockVueFire';
 
 const givenAPuzzleStage = (initialStatus) => shallowMount(Puzzle1Stage, {
   propsData: { initialStatus },
