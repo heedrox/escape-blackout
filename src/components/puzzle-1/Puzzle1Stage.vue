@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="[ 'panel', `panel-${numTransistors}` ]">
+    <div :class="[ 'panel', `panel-${numTransistors}` ]" v-if="isLoaded">
       <div class="cell" :class="{ }"></div>
       <div class="cell handle handle-col1" @click="clickHandle('col1')">{{ handles['col1'] }}</div>
       <div class="cell handle handle-col2" @click="clickHandle('col2')">{{ handles['col2'] }}</div>
@@ -85,6 +85,9 @@ export default {
     numTransistors() {
       return this.initialStatus.length;
     },
+    isLoaded() {
+      return (typeof this.status !== 'undefined') && this.status.length > 0;
+    },
   },
   data() {
     return {
@@ -99,16 +102,16 @@ export default {
         'col3': '-',
         'col4': '-',
       },
-      gameStatus: {},
+      puzzleStatus: {},
     };
   },
   firestore() {
     return {
-      gameStatus: firebaseUtil.doc('/'),
+      puzzleStatus: firebaseUtil.doc('/puzzle-status/puzzle-1'),
     }
   },
   created() {
-    this.status = this.initialStatus;
+    this.status = this.persistStatus ? this.puzzleStatus.commonStatus : this.initialStatus;
   },
   methods: {
     clickHandle(handle) {
@@ -118,10 +121,13 @@ export default {
         if (this.isBoardCompleted()) {
           this.$emit('complete');
         }
-        this.$firestoreRefs.gameStatus.update({ commonStatus: this.status });
+        if (this.persistStatus) {
+          this.$firestoreRefs.puzzleStatus.update({ commonStatus: this.status });
+        }
       }
     },
     isSuccess(numRow, numCol) {
+      if (typeof this.status === 'undefined') return false;
       if (typeof this.status[numRow] === 'undefined') return false;
       return this.status[numRow].split('')[numCol] === 'O';
     },
