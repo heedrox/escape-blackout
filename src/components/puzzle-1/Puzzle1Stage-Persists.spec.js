@@ -36,6 +36,16 @@ describe('Puzzle 1 Stage Persist', () => {
 
       expect(puzzle1Stage.vm.$firestoreRefs.puzzleStatus.update.mock.calls.length).toEqual(0);
     });
+
+    it('does not update the status from firestore when persistStatus = false and commonStatus is ready', async () => {
+      firebaseUtil.doc.mockImplementation(() => ({ }));
+      const puzzle1Stage = givenAPuzzleStageWithPersistStatus(INITIAL_STATUS, false);
+
+      puzzle1Stage.vm.puzzleStatus.commonStatus = COMMON_STATUS;
+      await puzzle1Stage.vm.$nextTick();
+
+      expect(puzzle1Stage.vm.status).toEqual(INITIAL_STATUS);
+    });
   });
 
   describe('When PersistStatus = true', () => {
@@ -55,12 +65,10 @@ describe('Puzzle 1 Stage Persist', () => {
       expect(whenPuzzleIsMounted).not.toThrow();
     });
 
-    xit('updates the status from firestore when persistStatus = true and commonStatus is ready', async () => {
+    it('updates the status from firestore when persistStatus = true and commonStatus is ready', async () => {
       firebaseUtil.doc.mockImplementation(() => ({ }));
       const puzzle1Stage = givenAPuzzleStageWithPersistStatus(INITIAL_STATUS, true);
 
-      //al cabo de unos microsecs
-      //se updatea la info de commonStatus.
       puzzle1Stage.vm.puzzleStatus.commonStatus = COMMON_STATUS;
       await puzzle1Stage.vm.$nextTick();
 

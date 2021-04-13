@@ -2,26 +2,26 @@
   <div>
     <div :class="[ 'panel', `panel-${numTransistors}` ]" v-if="isLoaded">
       <div class="cell" :class="{ }"></div>
-      <div class="cell handle handle-col1" @click="clickHandle('col1')">{{ handles['col1'] }}</div>
-      <div class="cell handle handle-col2" @click="clickHandle('col2')">{{ handles['col2'] }}</div>
-      <div class="cell handle handle-col3" @click="clickHandle('col3')">{{ handles['col3'] }}</div>
-      <div v-if="numTransistors >= 4" class="cell handle handle-col4" @click="clickHandle('col4')">{{ handles['col4'] }}</div>
-      <div class="cell handle handle-row1" @click="clickHandle('row1')">{{ handles['row1'] }}</div>
+      <div class="cell handle handle-col1" @click="clickHandle('col1')"><span v-if="blockHandles!=='COL'">{{ handles['col1'] }}</span></div>
+      <div class="cell handle handle-col2" @click="clickHandle('col2')"><span v-if="blockHandles!=='COL'">{{ handles['col2'] }}</span></div>
+      <div class="cell handle handle-col3" @click="clickHandle('col3')"><span v-if="blockHandles!=='COL'">{{ handles['col3'] }}</span></div>
+      <div v-if="numTransistors >= 4" class="cell handle handle-col4" @click="clickHandle('col4')"><span v-if="blockHandles!=='COL'">{{ handles['col4'] }}</span></div>
+      <div class="cell handle handle-row1" @click="clickHandle('row1')"><span v-if="blockHandles!=='ROW'">{{ handles['row1'] }}</span></div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 0) }">{{ status[0][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 1) }">{{ status[0][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(0, 2) }">{{ status[0][2] }}</div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(0, 3) }">{{ status[0][3] }}</div>
-      <div class="cell handle handle-row2" @click="clickHandle('row2')">{{ handles['row2'] }}</div>
+      <div class="cell handle handle-row2" @click="clickHandle('row2')"><span v-if="blockHandles!=='ROW'">{{ handles['row2'] }}</span></div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 0) }">{{ status[1][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 1) }">{{ status[1][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(1, 2) }">{{ status[1][2] }}</div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(1, 3) }">{{ status[1][3] }}</div>
-      <div class="cell handle handle-row3" @click="clickHandle('row3')">{{ handles['row3'] }}</div>
+      <div class="cell handle handle-row3" @click="clickHandle('row3')"><span v-if="blockHandles!=='ROW'">{{ handles['row3'] }}</span></div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 0) }">{{ status[2][0] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 1) }">{{ status[2][1] }}</div>
       <div class="cell transistor" :class="{ success : isSuccess(2, 2) }">{{ status[2][2] }}</div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(2, 3) }">{{ status[2][3] }}</div>
-      <div v-if="numTransistors >= 4" class="cell handle handle-row4" @click="clickHandle('row4')">{{ handles['row4'] }}</div>
+      <div v-if="numTransistors >= 4" class="cell handle handle-row4" @click="clickHandle('row4')"><span v-if="blockHandles!=='ROW'">{{ handles['row4'] }}</span></div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(3, 0) }">{{ status[3][0] }}</div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(3, 1) }">{{ status[3][1] }}</div>
       <div v-if="numTransistors >= 4" class="cell transistor" :class="{ success : isSuccess(3, 2) }">{{ status[3][2] }}</div>
@@ -112,6 +112,13 @@ export default {
   },
   created() {
     this.status = this.persistStatus ? this.puzzleStatus.commonStatus : this.initialStatus;
+  },
+  watch: {
+    puzzleStatus() {
+      if (this.puzzleStatus && this.puzzleStatus.commonStatus && this.persistStatus) {
+        this.status = this.puzzleStatus.commonStatus;
+      }
+    },
   },
   methods: {
     clickHandle(handle) {

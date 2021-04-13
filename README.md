@@ -36,16 +36,12 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### NEXT TODO (sesión con guille)
+### NEXT TODO
 
-x - si prop block-handles = COL, entonces no puedes mover los cols.
-x - si prop block-handles = ROW, entonces no puedes mover las rows.
-x - al cumplir el 2o stage, abrir el 3er stage.
-x - si eres el jugador 1, no puedes mover COLS
-x - si eres el jugador 2, no puedes mover ROWS.
-x - en el stage 1 y 2, el estado no es persistido.
-x - el el stage 3, el estado es persistido (el jugador 1 y 2 ven lo mismo)
-- cuando el estado es "persistido", solo puede tocar el jugador que tiene el turno: cuando no es tu turno, todo está bloqueado. si es tu turno, puedes mover o COLS / ROWS.
-- al cumplir el stage 3, se desbloquea el chat, y el puzle 2.
+- Después del puzzle1stage 1 , se muestra un mensaje del "desconocido".
+- Después del puzzle1stage 2, se muestra otro mensaje del "desconocido", que te informa que se ha habilitado también la red de forma limitada, y por tanto, puedes comunicarte (nueva app "Comm.")
+- Y aquí pensar el tema de los turnos. Si no es tu turno, ¿qué se myestra y cómo?
+- Después del puzle1stage 3, se te instala el puzzle2 (se habilita el icono del puzzle 2)
+- 
 
 

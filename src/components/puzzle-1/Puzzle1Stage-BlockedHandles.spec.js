@@ -10,52 +10,51 @@ describe('Puzzle 1 Stage can block some handles', () => {
     expect(puzzle1.vm.blockHandles).toEqual('');
   });
 
-  it('blocks COL handles', async () => {
-    const puzzle1 = shallowMount(Puzzle1Stage, {
-      propsData: {
-        initialStatus: ['XXX', 'XXX', 'XXX'],
-        blockHandles: 'COL'
-      },
+  describe('when block-handles = COL', () => {
+    it('hides COL handles', () => {
+      const puzzle1 = shallowMount(Puzzle1Stage, {
+        propsData: {
+          initialStatus: ['XXXX', 'XXXX', 'XXXX', 'XXXX'],
+          blockHandles: 'COL'
+        },
+      });
+
+      expect(puzzle1.find('.handle-col1').text()).toEqual('');
+      expect(puzzle1.find('.handle-col2').text()).toEqual('');
+      expect(puzzle1.find('.handle-col3').text()).toEqual('');
+      expect(puzzle1.find('.handle-col4').text()).toEqual('');
     });
 
-    puzzle1.find('.handle-col1').trigger('click');
-    await puzzle1.vm.$nextTick();
+    it('inverts row transistors', async () => {
+      const puzzle1 = shallowMount(Puzzle1Stage, {
+        propsData: {
+          initialStatus: ['XXX', 'XXX', 'XXX'],
+          blockHandles: 'COL'
+        },
+      });
 
-    expect(puzzle1.vm.status).toEqual([
-      'XXX', 'XXX', 'XXX'
-    ]);
-  })
+      puzzle1.find('.handle-row1').trigger('click');
+      await puzzle1.vm.$nextTick();
 
-  it('inverts row transistors when blocked COL handles', async () => {
-    const puzzle1 = shallowMount(Puzzle1Stage, {
-      propsData: {
-        initialStatus: ['XXX', 'XXX', 'XXX'],
-        blockHandles: 'COL'
-      },
+      expect(puzzle1.vm.status).toEqual([
+        'OOO', 'XXX', 'XXX'
+      ]);
+    })
+  });
+
+  describe('when block-handles = ROW', () => {
+    it('hides ROW handles', () => {
+      const puzzle1 = shallowMount(Puzzle1Stage, {
+        propsData: {
+          initialStatus: ['XXXX', 'XXXX', 'XXXX', 'XXXX'],
+          blockHandles: 'ROW'
+        },
+      });
+
+      expect(puzzle1.find('.handle-row1').text()).toEqual('');
+      expect(puzzle1.find('.handle-row2').text()).toEqual('');
+      expect(puzzle1.find('.handle-row3').text()).toEqual('');
+      expect(puzzle1.find('.handle-row4').text()).toEqual('');
     });
-
-    puzzle1.find('.handle-row1').trigger('click');
-    await puzzle1.vm.$nextTick();
-
-    expect(puzzle1.vm.status).toEqual([
-      'OOO', 'XXX', 'XXX'
-    ]);
-  })
-
-  it('blocks ROW handles', async () => {
-    const puzzle1 = shallowMount(Puzzle1Stage, {
-      propsData: {
-        initialStatus: ['XXX', 'XXX', 'XXX'],
-        blockHandles: 'ROW'
-      },
-    });
-
-    puzzle1.find('.handle-row1').trigger('click');
-    await puzzle1.vm.$nextTick();
-
-    expect(puzzle1.vm.status).toEqual([
-      'XXX', 'XXX', 'XXX'
-    ]);
-  })
-
+  });
 });
