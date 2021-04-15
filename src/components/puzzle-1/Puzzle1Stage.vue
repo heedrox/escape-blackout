@@ -46,6 +46,7 @@
   outline: solid 1px #900;
   font-size: 7vh;
   padding-top: 5vh;
+  min-height:7vh;
 }
 
 .panel-3 .cell {

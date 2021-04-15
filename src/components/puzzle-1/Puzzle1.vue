@@ -1,8 +1,20 @@
 <template>
   <div>
-    <puzzle-1-stage key="puzzle-stage1" v-if="myStage === 1" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
-    <puzzle-1-stage key="puzzle-stage2" v-if="myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :persist-status="false" @complete="completeStage(2)"/>
-    <puzzle-1-stage key="puzzle-stage3" v-if="myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true"/>
+    <div v-if="showMessage">
+      <p>Te doy la bienvenida.</p>
+      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+    </div>
+    <puzzle-1-stage key="puzzle-stage1" v-if="!showMessage & (myStage === 1)" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
+    <!--div v-if="showMessage">
+      <p>Muy bien, ¿eres capaz de enfrentarte a algo más complejo?.</p>
+      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+    </div-->
+    <puzzle-1-stage key="puzzle-stage2" v-if="!showMessage & myStage === 2" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :persist-status="false" @complete="completeStage(2)"/>
+    <!--<div v-if="showMessage">
+      <p>Nada grandioso se ha conseguido solo. Te he descargado la app de chat. ¿Quién habrá al otro lado?</p>
+      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+    </div>-->
+    <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage & myStage === 3" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true"/>
   </div>
 </template>
 <script>
@@ -27,6 +39,7 @@ export default {
   data() {
     return {
       puzzleStatus: {notloaded: true},
+      showMessage: localStorage.getItem('puzzle1-hideMessage') !== 'hidden',
     };
   },
   firestore() {
@@ -38,6 +51,10 @@ export default {
     completeStage(numStage) {
       const key = `stagePlayer${GetNumPlayer.get()}`;
       this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
+    },
+    hideMessage() {
+      this.showMessage = false;
+      localStorage.setItem('puzzle1-hideMessage', 'hidden');
     }
   }
 };
