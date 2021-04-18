@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div v-if="showMessage && (myStage === 1)">
-      <p>{{ $t('puzzle1.intro-message-1') }}</p>
+  <div class="puzzle1">
+    <div v-if="showMessage && (myStage === 1)" class="puzzle1-message">
+      <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage1" v-if="!showMessage && (myStage === 1)" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
@@ -17,6 +17,34 @@
     <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage && (myStage === 3)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true"/>
   </div>
 </template>
+<style scoped>
+.puzzle1-message {
+  padding: 5vw;
+}
+
+.typing {
+  position: relative;
+  width: fit-content;
+}
+
+.typing::after {
+   content: "|";
+   position: absolute;
+   right: 0;
+   width: 100%;
+   color: #009900;
+   background: #000000;
+   animation: typing 4s steps(21) forwards,
+   caret 1s infinite;
+}
+
+@keyframes typing {
+  to { width: 0 }
+}
+@keyframes caret {
+  50% { color: transparent }
+}
+</style>
 <script>
 import Puzzle1Stage from './Puzzle1Stage';
 import firebaseUtil from '../../lib/firebase/firebase-util';
