@@ -1,5 +1,7 @@
 <template>
   <div class="puzzle1">
+    <div v-if="playersTurn">{{ $t('global.your-turn') }}</div>
+    <div v-else>{{ $t('global.not-your-turn') }}</div>
     <div v-if="showMessage && (myStage === 1)" class="puzzle1-message">
       <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
@@ -62,17 +64,22 @@ export default {
     },
     blockHandles() {
       return GetNumPlayer.get() === 1 ? 'COL' : 'ROW';
+    },
+    playersTurn() {
+      return this.globalStatus.turn === GetNumPlayer.get()
     }
   },
   data() {
     return {
-      puzzleStatus: {notloaded: true},
+      puzzleStatus: { notloaded: true },
+      globalStatus: {},
       showMessage: localStorage.getItem('puzzle1-hideMessage') !== 'hidden',
     };
   },
   firestore() {
     return {
       puzzleStatus: firebaseUtil.doc('/puzzle-status/puzzle-1'),
+      globalStatus: firebaseUtil.doc('/')
     };
   },
   methods: {

@@ -1,4 +1,8 @@
 {
+  "global": {
+    "your-turn": "Tu turno",
+    "not-your-turn": "No es tu turno"
+  },
   "puzzle1": {
     "intro-message-1": "Te doy la bienvenida.",
     "intro-message-2": "Muy bien, ¿eres capaz de enfrentarte a algo más complejo?.",
