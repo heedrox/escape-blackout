@@ -1,5 +1,7 @@
 {
   "puzzle1": {
-    "intro-message-stage-1": "Te doy la bienvenita"
+    "intro-message-1": "Te doy la bienvenida.",
+    "intro-message-2": "Muy bien, ¿eres capaz de enfrentarte a algo más complejo?.",
+    "intro-message-3": "Nada grandioso se ha conseguido solo. Te he descargado la app de chat. ¿Quién habrá al otro lado?"
   }
 }

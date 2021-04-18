@@ -46,6 +46,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - 
 
 Cosas varias:
-- instalado i18n.
-- it.todo o it.skip o describe.each o it.each
+- instalado vue-i18n. -> tests
+- describe.each o it.each
+- Refactorizar el componente de "texto hola"
 

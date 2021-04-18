@@ -27,7 +27,7 @@ describe('Puzzle 1 shows messages between stages', () => {
 
     const puzzle1 = shallowMount(Puzzle1);
 
-    expect(puzzle1.text()).toMatch('Te doy la bienvenida');
+    expect(puzzle1.text()).toMatch('puzzle1.intro-message-1');
   });
 
   it('hides puzzle before puzzle stage 1', async () => {
@@ -47,7 +47,7 @@ describe('Puzzle 1 shows messages between stages', () => {
     puzzle1.find('[data-test-id=btn-message-ok]').trigger('click');
     await puzzle1.vm.$nextTick();
 
-    expect(puzzle1.text()).not.toMatch('Te doy la bienvenida');
+    expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-1');
   });
 
   it('does not show the message when reloading if OK has been pressed', async () => {
@@ -59,7 +59,7 @@ describe('Puzzle 1 shows messages between stages', () => {
 
     const puzzle1after = shallowMount(Puzzle1);
 
-    expect(puzzle1after.text()).not.toMatch('Te doy la bienvenida');
+    expect(puzzle1after.text()).not.toMatch('puzzle1.intro-message-1');
     expect(puzzle1after.findComponent(Puzzle1Stage).exists()).toBeTruthy();
   });
 })

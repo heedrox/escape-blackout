@@ -1,17 +1,17 @@
 <template>
   <div>
     <div v-if="showMessage && (myStage === 1)">
-      <p>Te doy la bienvenida.</p>
+      <p>{{ $t('puzzle1.intro-message-1') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage1" v-if="!showMessage && (myStage === 1)" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
     <div v-if="showMessage && (myStage === 2)">
-      <p>Muy bien, ¿eres capaz de enfrentarte a algo más complejo?.</p>
+      <p>{{ $t('puzzle1.intro-message-2') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage2" v-if="!showMessage && (myStage === 2)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :persist-status="false" @complete="completeStage(2)"/>
     <div v-if="showMessage && (myStage === 3)">
-      <p>Nada grandioso se ha conseguido solo. Te he descargado la app de chat. ¿Quién habrá al otro lado?</p>
+      <p>{{ $t('puzzle1.intro-message-3') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage && (myStage === 3)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true"/>

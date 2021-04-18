@@ -34,8 +34,8 @@ describe('Puzzle 1 - When transitioning stage', () => {
       theEasyStage.vm.$emit('complete');
       await puzzle1.vm.$nextTick();
 
-      expect(puzzle1.text()).toMatch('Muy bien');
-      expect(puzzle1.text()).not.toMatch('Te doy la bienvenida');
+      expect(puzzle1.text()).toMatch('puzzle1.intro-message-2');
+      expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-1');
     });
 
     it('hides the second introduction message, when pressed OK', async () => {
@@ -50,7 +50,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
       puzzle1.find('[data-test-id=btn-message-ok]').trigger('click');
       await puzzle1.vm.$nextTick();
 
-      expect(puzzle1.text()).not.toMatch('Muy bien');
+      expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-2');
     });
 
     it('shows the MEDIUM puzzle stage, when player 1 and introduction message has been read', async () => {
@@ -97,8 +97,8 @@ describe('Puzzle 1 - When transitioning stage', () => {
      theMediumStage.vm.$emit('complete');
      await puzzle1.vm.$nextTick();
 
-     expect(puzzle1.text()).toMatch('grandioso');
-     expect(puzzle1.text()).not.toMatch('Muy bien');
+     expect(puzzle1.text()).toMatch('puzzle1.intro-message-3');
+     expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-2');
 
    });
    it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
