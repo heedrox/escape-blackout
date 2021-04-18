@@ -29,13 +29,42 @@ beforeEach(async () => {
 
 describe('Puzzle 1 - When transitioning stage', () => {
   describe('When transitioning Easy -> Medium', () => {
-    it('shows the MEDIUM puzzle stage, when player 1, after EASY puzzle stage has been completed', async () => {
+    it('shows the second introduction message', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      expect(puzzle1.text()).toMatch('Muy bien');
+      expect(puzzle1.text()).not.toMatch('Te doy la bienvenida');
+    });
+
+    it('hides the second introduction message, when pressed OK', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
+      const puzzle1 = shallowMount(Puzzle1);
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      puzzle1.find('[data-test-id=btn-message-ok]').trigger('click');
+      await puzzle1.vm.$nextTick();
+
+      expect(puzzle1.text()).not.toMatch('Muy bien');
+    });
+
+    it('shows the MEDIUM puzzle stage, when player 1 and introduction message has been read', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
+      const puzzle1 = shallowMount(Puzzle1);
+      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
+      theEasyStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      puzzle1.find('[data-test-id=btn-message-ok]').trigger('click');
       await puzzle1.vm.$nextTick();
 
       const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
@@ -56,7 +85,8 @@ describe('Puzzle 1 - When transitioning stage', () => {
     });
 
   });
-  describe('When transitioning MEDIUM -> HARD', () => {
+
+ describe('When transitioning MEDIUM -> HARD', () => {
     it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
