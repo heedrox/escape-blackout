@@ -45,4 +45,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - Después del puzle1stage 3, se te instala el puzzle2 (se habilita el icono del puzzle 2)
 - 
 
+Cosas varias:
+- instalado i18n.
+- it.todo o it.skip o describe.each o it.each
 

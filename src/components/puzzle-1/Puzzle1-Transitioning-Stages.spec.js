@@ -8,23 +8,18 @@ import GetNumPlayer from '../../lib/get-num-player.js';
 
 Vue.use(MockVueFire);
 
-const aTest = (numPlayer, puzzleStatus, expectedStatus, expectedPuzzle) =>
-  ({numPlayer, puzzleStatus, expectedStatus, expectedPuzzle});
-
 const givenPlayerNumber = (playerNumber) => {
   jest.mock('@/lib/get-num-player.js');
   GetNumPlayer.get = jest.fn(() => playerNumber);
 };
 
-const givenIntroductionMessageHasBeenPressed = async () => {
-  const puzzle1 = shallowMount(Puzzle1);
-  puzzle1.find('[data-test-id=btn-message-ok]').trigger('click');
-  await puzzle1.vm.$nextTick();
+const andIntroductionMessageHasBeenPressed = async (puzzle) => {
+  puzzle.find('[data-test-id=btn-message-ok]').trigger('click');
+  await puzzle.vm.$nextTick();
 };
 
 beforeEach(async () => {
   localStorage.clear();
-  await givenIntroductionMessageHasBeenPressed();
 });
 
 describe('Puzzle 1 - When transitioning stage', () => {
@@ -33,6 +28,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
@@ -46,6 +42,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
       await puzzle1.vm.$nextTick();
@@ -60,6 +57,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
       await puzzle1.vm.$nextTick();
@@ -75,10 +73,12 @@ describe('Puzzle 1 - When transitioning stage', () => {
       givenPlayerNumber(2);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer2': 1 }));
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
       await puzzle1.vm.$nextTick();
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
       expect(theMediumStage.vm.initialStatus.length).toEqual(4);
@@ -87,14 +87,30 @@ describe('Puzzle 1 - When transitioning stage', () => {
   });
 
  describe('When transitioning MEDIUM -> HARD', () => {
-    it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
+   it('shows the third introduction message', async () => {
+     givenPlayerNumber(1);
+     firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
+     const puzzle1 = shallowMount(Puzzle1);
+     await andIntroductionMessageHasBeenPressed(puzzle1);
+
+     const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+     theMediumStage.vm.$emit('complete');
+     await puzzle1.vm.$nextTick();
+
+     expect(puzzle1.text()).toMatch('grandioso');
+     expect(puzzle1.text()).not.toMatch('Muy bien');
+
+   });
+   it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
-      const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
-      theEasyStage.vm.$emit('complete');
-      await puzzle1.vm.$nextTick();
+      const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+     theMediumStage.vm.$emit('complete');
+      await theMediumStage.vm.$nextTick();
+     await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theHardStage = puzzle1.findComponent(Puzzle1Stage);
       expect(theHardStage.vm.initialStatus.length).toEqual(4);
@@ -106,8 +122,8 @@ describe('Puzzle 1 - When transitioning stage', () => {
     it('persists data in firestore', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
-
       const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theEasyStage = puzzle1.findComponent(Puzzle1Stage);
       theEasyStage.vm.$emit('complete');
