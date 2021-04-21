@@ -8,30 +8,65 @@ const givenPlayerNumber = (playerNumber) => {
   GetNumPlayer.get = jest.fn(() => playerNumber);
 };
 
+const THE_OVERLAY = '[data-test-id=turn-overlay]';
+
+const givenTurnForPlayer = (player) =>
+  firebaseUtil.doc.mockImplementation((path) => {
+  if (path === '/') return { turn: player }
+  return { [`stagePlayer${player}`]: 1 };
+});
+
 describe('Puzzle 1 Stage Controls Turns', () => {
 
-  it('shows its your turn', () => {
-    givenPlayerNumber(1);
-    firebaseUtil.doc.mockImplementation((path) => {
-      if (path === '/') return { 'turn': 1 }
-      return { 'stagePlayer1': 1 };
+  describe('When its your turn', () => {
+    it('does not show overlay', () => {
+      givenPlayerNumber(1);
+      givenTurnForPlayer(1);
+
+      const puzzle = shallowMount(Puzzle1);
+
+      expect(puzzle.find(THE_OVERLAY).exists()).toBeFalsy();
     });
-
-    const puzzle = shallowMount(Puzzle1);
-
-    expect(puzzle.text()).toMatch('global.your-turn')
   });
 
-  it('shows not your turn', () => {
-    givenPlayerNumber(2);
-    firebaseUtil.doc.mockImplementation((path) => {
-      if (path === '/') return { 'turn': 1 }
-      return { 'stagePlayer1': 1 };
+  describe('When its NOT your turn', () => {
+
+    beforeEach(() => {
+      givenPlayerNumber(2);
+      givenTurnForPlayer(1);
     });
 
-    const puzzle = shallowMount(Puzzle1);
+    it('shows overlay', () => {
+      const puzzle = shallowMount(Puzzle1);
 
-    expect(puzzle.text()).not.toMatch('global.your-turn')
-    expect(puzzle.text()).toMatch('global.not-your-turn')
+      expect(puzzle.find(THE_OVERLAY).exists()).toBeTruthy();
+    });
+
+    it('does not show any message', () => {
+      const puzzle = shallowMount(Puzzle1);
+
+      expect(puzzle.find(THE_OVERLAY).text()).not.toMatch('global.not-your-turn');
+    });
+
+    it('shows a message when when you click on the overlay', async () => {
+      const puzzle = shallowMount(Puzzle1);
+
+      puzzle.find(THE_OVERLAY).trigger('click');
+      await puzzle.vm.$nextTick();
+
+      expect(puzzle.find(THE_OVERLAY).text()).toMatch('global.not-your-turn');
+    });
+
+    it('hides message after 5 secs', async () => {
+      jest.useFakeTimers();
+      const puzzle = shallowMount(Puzzle1);
+      puzzle.find(THE_OVERLAY).trigger('click');
+      await puzzle.vm.$nextTick();
+
+      jest.advanceTimersByTime(5000);
+      await puzzle.vm.$nextTick();
+
+      expect(puzzle.find(THE_OVERLAY).text()).not.toMatch('global.not-your-turn');
+    });
   });
 });

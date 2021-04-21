@@ -1,7 +1,10 @@
 <template>
   <div class="puzzle1">
-    <div v-if="playersTurn">{{ $t('global.your-turn') }}</div>
-    <div v-else>{{ $t('global.not-your-turn') }}</div>
+    <div v-if="!playersTurn" class="puzzle1-turn-overlay" data-test-id="turn-overlay" @click="clickOverlay()">
+      <div v-if="showOverlayMessage">
+        {{ $t('global.not-your-turn') }}
+      </div>
+    </div>
     <div v-if="showMessage && (myStage === 1)" class="puzzle1-message">
       <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
@@ -20,6 +23,14 @@
   </div>
 </template>
 <style scoped>
+.puzzle1-turn-overlay {
+  height: 95vh;
+  background-color: rgba(66,66,66,0.25);
+  position: fixed;
+  width: 95vw;
+  top: 12vh;
+}
+
 .puzzle1-message {
   padding: 5vw;
 }
@@ -74,6 +85,7 @@ export default {
       puzzleStatus: { notloaded: true },
       globalStatus: {},
       showMessage: localStorage.getItem('puzzle1-hideMessage') !== 'hidden',
+      showOverlayMessage: false,
     };
   },
   firestore() {
@@ -92,6 +104,12 @@ export default {
     hideMessage() {
       this.showMessage = false;
       localStorage.setItem('puzzle1-hideMessage', 'hidden');
+    },
+    clickOverlay() {
+      this.showOverlayMessage = true;
+      setTimeout(() => {
+        this.showOverlayMessage = false;
+      }, 5000);
     }
   }
 };
