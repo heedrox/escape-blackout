@@ -5,6 +5,7 @@ import Puzzle1 from './Puzzle1';
 import Puzzle1Stage from './Puzzle1Stage';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 import GetNumPlayer from '../../lib/get-num-player.js';
+import { getUpdatedField } from '../../test-utils/firestore-utils';
 
 Vue.use(MockVueFire);
 
@@ -86,31 +87,31 @@ describe('Puzzle 1 - When transitioning stage', () => {
 
   });
 
- describe('When transitioning MEDIUM -> HARD', () => {
-   it('shows the third introduction message', async () => {
-     givenPlayerNumber(1);
-     firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
-     const puzzle1 = shallowMount(Puzzle1);
-     await andIntroductionMessageHasBeenPressed(puzzle1);
-
-     const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
-     theMediumStage.vm.$emit('complete');
-     await puzzle1.vm.$nextTick();
-
-     expect(puzzle1.text()).toMatch('puzzle1.intro-message-3');
-     expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-2');
-
-   });
-   it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
+  describe('When transitioning MEDIUM -> HARD', () => {
+    it('shows the third introduction message', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
       const puzzle1 = shallowMount(Puzzle1);
       await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
-     theMediumStage.vm.$emit('complete');
+      theMediumStage.vm.$emit('complete');
+      await puzzle1.vm.$nextTick();
+
+      expect(puzzle1.text()).toMatch('puzzle1.intro-message-3');
+      expect(puzzle1.text()).not.toMatch('puzzle1.intro-message-2');
+
+    });
+    it('shows the HARD puzzle stage, after MEDIUM puzzle stage has been completed', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 2 }));
+      const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
+
+      const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+      theMediumStage.vm.$emit('complete');
       await theMediumStage.vm.$nextTick();
-     await andIntroductionMessageHasBeenPressed(puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theHardStage = puzzle1.findComponent(Puzzle1Stage);
       expect(theHardStage.vm.initialStatus.length).toEqual(4);
@@ -118,45 +119,56 @@ describe('Puzzle 1 - When transitioning stage', () => {
     });
   });
 
-   describe('When transitioning HARD - > puzzle 2', () => {
-     it('does not increase stage number in puzzle1 data', async () => {
-       givenPlayerNumber(1);
-       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
-       const puzzle1 = shallowMount(Puzzle1);
-       await andIntroductionMessageHasBeenPressed(puzzle1);
+  describe('unlocking chat', () => {
+    it.each`
+    stage | expectedUpdate
+    ${1}  | ${undefined}
+    ${2}  | ${true}
+    `('unlocks CHAT ONLY transitioning from stage 2 to 3 - STAGE $stage / $expectedUpdate', async ( { stage, expectedUpdate }) => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': stage }));
+      const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
-       const theStage = puzzle1.findComponent(Puzzle1Stage);
-       theStage.vm.$emit('complete')
+      const theMediumStage = puzzle1.findComponent(Puzzle1Stage);
+      theMediumStage.vm.$emit('complete');
 
-       expect(puzzle1.vm.puzzleStatus.stagePlayer1).toEqual(3);
-     });
+      expect(getUpdatedField(puzzle1, 'globalStatus', 'app-chat')).toBe(expectedUpdate)
+    });
 
-     it('does not store puzzle number 2 when completed puzzle 1 stage 1 o 2', async () => {
-       givenPlayerNumber(1);
-       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
-       const puzzle1 = shallowMount(Puzzle1);
-       await andIntroductionMessageHasBeenPressed(puzzle1);
+  });
+  describe('When transitioning HARD - > puzzle 2', () => {
+    it('does not increase stage number in puzzle1 data', async () => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
+      const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
-       const theStage = puzzle1.findComponent(Puzzle1Stage);
-       theStage.vm.$emit('complete')
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      theStage.vm.$emit('complete')
 
-       expect(puzzle1.vm.$firestoreRefs.globalStatus.update.mock.calls.length).toEqual(0);
-     });
+      expect(puzzle1.vm.puzzleStatus.stagePlayer1).toEqual(3);
+    });
 
-     it('stores puzzle number 2 when completed puzzle 1 stage 3', async () => {
-       givenPlayerNumber(1);
-       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
-       const puzzle1 = shallowMount(Puzzle1);
-       await andIntroductionMessageHasBeenPressed(puzzle1);
+    it.each`
+     stage | sentPuzzle
+     ${1}  | ${undefined}
+     ${2}  | ${undefined}
+     ${3}  | ${2}
+     `('stores puzzle number 2 when completed puzzle 1 stage 3 ONLY (case: $stage - $sentPuzzle)', async ({ stage, sentPuzzle }) => {
+      givenPlayerNumber(1);
+      firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: stage }));
+      const puzzle1 = shallowMount(Puzzle1);
+      await andIntroductionMessageHasBeenPressed(puzzle1);
 
-       const theStage = puzzle1.findComponent(Puzzle1Stage);
-       theStage.vm.$emit('complete')
+      const theStage = puzzle1.findComponent(Puzzle1Stage);
+      theStage.vm.$emit('complete')
 
-       expect(puzzle1.vm.$firestoreRefs.globalStatus.update.mock.calls[0][0]).toEqual({ puzzle: 2 });
-     });
-   });
+      expect(getUpdatedField(puzzle1, 'globalStatus', 'puzzle')).toEqual(sentPuzzle)
+    });
+  });
 
-   describe('Stage is persisted', () => {
+  describe('Stage is persisted', () => {
     it('persists data in firestore', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
@@ -167,7 +179,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
       theEasyStage.vm.$emit('complete');
       await puzzle1.vm.$nextTick();
 
-      expect(puzzle1.vm.$firestoreRefs.puzzleStatus.update.mock.calls.length).toBe(1);
+      expect(getUpdatedField(puzzle1, 'puzzleStatus', 'stagePlayer1')).toBe(2)
     });
   });
 

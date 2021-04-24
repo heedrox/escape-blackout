@@ -62,6 +62,7 @@
 import Puzzle1Stage from './Puzzle1Stage';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 import GetNumPlayer from '../../lib/get-num-player';
+import Puzzle1MessagePersistor from './Puzzle1MessagePersistor';
 
 export default {
   name: 'Puzzle1',
@@ -84,7 +85,7 @@ export default {
     return {
       puzzleStatus: { notloaded: true },
       globalStatus: {},
-      showMessage: localStorage.getItem('puzzle1-hideMessage') !== 'hidden',
+      showMessage: !Puzzle1MessagePersistor.isSetHidden(),
       showOverlayMessage: false,
     };
   },
@@ -97,17 +98,23 @@ export default {
   methods: {
     completeStage(numStage) {
       if (numStage < 3) {
-        const key = `stagePlayer${GetNumPlayer.get()}`;
-        this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
-        localStorage.removeItem('puzzle1-hideMessage');
+        if (numStage === 2) {
+          this.$firestoreRefs.globalStatus.update({ 'app-chat': true})
+        }
+        this.increaseStage(numStage);
+        Puzzle1MessagePersistor.clear();
         this.showMessage = true;
       } else {
         this.$firestoreRefs.globalStatus.update({ puzzle: 2})
       }
     },
+    increaseStage(numStage) {
+      const key = `stagePlayer${GetNumPlayer.get()}`;
+      this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
+    },
     hideMessage() {
       this.showMessage = false;
-      localStorage.setItem('puzzle1-hideMessage', 'hidden');
+      Puzzle1MessagePersistor.setHidden();
     },
     clickOverlay() {
       this.showOverlayMessage = true;
