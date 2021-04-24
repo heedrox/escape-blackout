@@ -38,6 +38,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### NEXT TODO
 
+- ya hemos desbloqueado el chat
 - después del puzzle1stage 2, se debe instalar un chat en el desktop.
     - Tenemos que hacer toda la funcionalidad del chat.
     
