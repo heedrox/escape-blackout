@@ -19,7 +19,7 @@
       <p>{{ $t('puzzle1.intro-message-3') }}</p>
       <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
-    <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage && (myStage === 3)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true"/>
+    <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage && (myStage === 3)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true" @complete="completeStage(3) "/>
   </div>
 </template>
 <style scoped>
@@ -96,10 +96,14 @@ export default {
   },
   methods: {
     completeStage(numStage) {
-      const key = `stagePlayer${GetNumPlayer.get()}`;
-      this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
-      localStorage.removeItem('puzzle1-hideMessage');
-      this.showMessage = true;
+      if (numStage < 3) {
+        const key = `stagePlayer${GetNumPlayer.get()}`;
+        this.$firestoreRefs.puzzleStatus.update({[key]: numStage + 1});
+        localStorage.removeItem('puzzle1-hideMessage');
+        this.showMessage = true;
+      } else {
+        this.$firestoreRefs.globalStatus.update({ puzzle: 2})
+      }
     },
     hideMessage() {
       this.showMessage = false;

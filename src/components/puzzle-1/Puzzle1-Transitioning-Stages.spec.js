@@ -118,7 +118,45 @@ describe('Puzzle 1 - When transitioning stage', () => {
     });
   });
 
-  describe('Stage is persisted', () => {
+   describe('When transitioning HARD - > puzzle 2', () => {
+     it('does not increase stage number in puzzle1 data', async () => {
+       givenPlayerNumber(1);
+       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
+       const puzzle1 = shallowMount(Puzzle1);
+       await andIntroductionMessageHasBeenPressed(puzzle1);
+
+       const theStage = puzzle1.findComponent(Puzzle1Stage);
+       theStage.vm.$emit('complete')
+
+       expect(puzzle1.vm.puzzleStatus.stagePlayer1).toEqual(3);
+     });
+
+     it('does not store puzzle number 2 when completed puzzle 1 stage 1 o 2', async () => {
+       givenPlayerNumber(1);
+       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
+       const puzzle1 = shallowMount(Puzzle1);
+       await andIntroductionMessageHasBeenPressed(puzzle1);
+
+       const theStage = puzzle1.findComponent(Puzzle1Stage);
+       theStage.vm.$emit('complete')
+
+       expect(puzzle1.vm.$firestoreRefs.globalStatus.update.mock.calls.length).toEqual(0);
+     });
+
+     it('stores puzzle number 2 when completed puzzle 1 stage 3', async () => {
+       givenPlayerNumber(1);
+       firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
+       const puzzle1 = shallowMount(Puzzle1);
+       await andIntroductionMessageHasBeenPressed(puzzle1);
+
+       const theStage = puzzle1.findComponent(Puzzle1Stage);
+       theStage.vm.$emit('complete')
+
+       expect(puzzle1.vm.$firestoreRefs.globalStatus.update.mock.calls[0][0]).toEqual({ puzzle: 2 });
+     });
+   });
+
+   describe('Stage is persisted', () => {
     it('persists data in firestore', async () => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': 1 }));
