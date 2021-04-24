@@ -38,8 +38,15 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### NEXT TODO
 
-- Y aquí pensar el tema de los turnos. Si no es tu turno, ¿qué se myestra y cómo?
-- Después del puzle1stage 3, se te instala el puzzle2 (se habilita el icono del puzzle 2)
+- después del puzzle1stage 2, se debe instalar un chat en el desktop.
+    - Tenemos que hacer toda la funcionalidad del chat.
+    
+- Después del puzle1stage 3, se te instala el puzzle2:
+    - (se habilita el icono del puzzle 2)
+    - se habilita un icono de ficheros. en los ficheros se ven dos ficheros diferentes, depende quien sea. 
+    
+    
+  
 - 
 
 Cosas varias:
