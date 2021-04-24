@@ -124,6 +124,7 @@ describe('Puzzle 1 - When transitioning stage', () => {
     stage | expectedUpdate
     ${1}  | ${undefined}
     ${2}  | ${true}
+    ${3}  | ${undefined}
     `('unlocks CHAT ONLY transitioning from stage 2 to 3 - STAGE $stage / $expectedUpdate', async ( { stage, expectedUpdate }) => {
       givenPlayerNumber(1);
       firebaseUtil.doc.mockImplementation(() => ({ 'stagePlayer1': stage }));
