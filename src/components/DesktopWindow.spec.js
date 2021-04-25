@@ -36,7 +36,7 @@ describe('DesktopWindow.vue', () => {
   })
 
   it('opens puzzle 1', () => {
-    const wrapper = shallowMount(DesktopWindow);
+    const wrapper = shallowMount(DesktopWindow, { propsData: { component: Puzzle1 } } );
 
     expect(wrapper.findComponent(Puzzle1).exists()).toBeTruthy();
   });

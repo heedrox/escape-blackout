@@ -2,13 +2,13 @@
   <div class="desktop-window">
     <div class="desktop-window-toolbar">
       <div class="desktop-window-toolbar-icon">
-        <img :src="icon" :alt="title" />
+        <img :src="icon" :alt="title" data-test-id="desktop-window-toolbar-icon"/>
       </div>
       <div class="desktop-window-toolbar-title" data-test-id="desktop-window-title">{{ title }}</div>
       <div class="close-handler" @click="clickCloseHandler()">X</div>
     </div>
     <div class="desktop-window-body">
-      <puzzle-1></puzzle-1>
+      <component v-if="component" :is="component" />
     </div>
   </div>
 </template>
@@ -70,12 +70,13 @@
 }
 </style>
 <script>
-import Puzzle1 from './puzzle-1/Puzzle1'
+import Puzzle1 from './puzzle-1/Puzzle1';
+import Chat from './chat/Chat';
 
 export default {
   name: 'desktop-window',
   emits: [ 'close' ],
-  components: { Puzzle1 },
+  components: { Puzzle1, Chat },
   props: {
     title: {
       type: String,
@@ -85,6 +86,10 @@ export default {
       type: String,
       default: 'x'
     },
+    component: {
+      type: Object,
+      default: () => null,
+    }
   },
   methods: {
     clickCloseHandler () {

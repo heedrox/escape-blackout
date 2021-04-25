@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import Desktop from './Desktop.vue'
 import { givenFirestore } from '../test-utils/firestore-test-utils';
 import DesktopIcon from './DesktopIcon';
-import DesktopWindow from './DesktopWindow';
+import Chat from './chat/Chat';
 
 describe('Desktop App Chat.vue', () => {
 
@@ -27,7 +27,22 @@ describe('Desktop App Chat.vue', () => {
     expect(icons.filter(icon => icon.props('text') === 'apps.chat').length).toBe(1);
   });
 
+  it('opens puzzle window when app-network is clicked', async () => {
+    givenFirestore({
+      '/puzzle-status/puzzle-1': {},
+      '/': { 'app-chat': true }
+    });
+    const desktop = mount(Desktop);
+
+    desktop.find('[data-test-id="desktop-icon-clickable-apps.network"]').trigger('click');
+    await desktop.vm.$nextTick();
+
+    expect(desktop.findComponent(Chat).exists()).toBeFalsy();
+  });
+
   it('opens chat desktop window when app-chat is clicked', async () => {
+    jest.mock('./puzzle-1/puzzle-1-icon.svg', () => 'puzzle-1-icon.svg');
+    jest.mock('./chat/chat-icon.svg', () => 'chat-icon.svg');
     givenFirestore({
       '/puzzle-status/puzzle-1': {},
       '/': { 'app-chat': true }
@@ -38,5 +53,8 @@ describe('Desktop App Chat.vue', () => {
     await desktop.vm.$nextTick();
 
     expect(desktop.find('[data-test-id="desktop-window-title"]').text()).toEqual('apps.chat');
+    expect(desktop.find('[data-test-id="desktop-window-toolbar-icon"]').element.src).toMatch('chat-icon.svg');
+    expect(desktop.findComponent(Chat).exists()).toBeTruthy();
   });
+
 })
