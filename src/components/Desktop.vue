@@ -6,6 +6,7 @@
         v-if="showDesktopWindow" title="Network" @close="closeDesktopIcon"
         :icon="require('./puzzle-1/puzzle-1-icon.svg')">
     </desktop-window>
+    <div v-if="globalStatus['app-chat']">{{ $t('apps.chat') }}</div>
     <input v-if="playersTurn" type="button" class="desktop-change-turn-btn" data-test-id="desktop-change-turn-btn" value="Change turn" @click="clickChangeTurnBtn()">
   </div>
 </template>

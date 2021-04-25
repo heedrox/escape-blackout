@@ -45,6 +45,4 @@ describe('Desktop.vue', () => {
 
     expect(wrapper.findComponent(DesktopWindow).exists()).toBe(false);
   });
-
-  it.todo('shows chat when unlocked');
 })
