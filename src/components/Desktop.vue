@@ -1,12 +1,13 @@
 <template>
   <div class="desktop">
     <desktop-icon class="app" text="Network" :icon="require('./puzzle-1/puzzle-1-icon.svg')"
-    @click="clickDesktopIcon()"></desktop-icon>
+    @click="clickDesktopIcon('network')"></desktop-icon>
     <desktop-window
-        v-if="showDesktopWindow" title="Network" @close="closeDesktopIcon"
+        v-if="showDesktopWindow" :title="windowTitle" @close="closeDesktopIcon"
         :icon="require('./puzzle-1/puzzle-1-icon.svg')">
     </desktop-window>
-    <desktop-icon class="app" v-if="globalStatus['app-chat']" :text="$t('apps.chat')" :icon="require('./puzzle-2/puzzle-2-icon.svg')"></desktop-icon>
+    <desktop-icon class="app" v-if="globalStatus['app-chat']" :text="$t('apps.chat')" :icon="require('./puzzle-2/puzzle-2-icon.svg')"
+                  @click="clickDesktopIcon('chat')"></desktop-icon>
     <input v-if="playersTurn" type="button" class="desktop-change-turn-btn" data-test-id="desktop-change-turn-btn" value="Change turn" @click="clickChangeTurnBtn()">
   </div>
 </template>
@@ -36,6 +37,7 @@ export default {
     return {
       showDesktopWindow: false,
       globalStatus: { },
+      windowTitle: '',
     }
   },
   firestore() {
@@ -44,8 +46,9 @@ export default {
     };
   },
   methods: {
-    clickDesktopIcon () {
+    clickDesktopIcon (app) {
       this.showDesktopWindow = true;
+      this.windowTitle = this.$t(`apps.${app}`);
     },
     closeDesktopIcon () {
       this.showDesktopWindow = false;

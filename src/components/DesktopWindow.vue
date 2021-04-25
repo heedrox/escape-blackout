@@ -4,7 +4,7 @@
       <div class="desktop-window-toolbar-icon">
         <img :src="icon" :alt="title" />
       </div>
-      <div class="desktop-window-toolbar-title">{{ title }}</div>
+      <div class="desktop-window-toolbar-title" data-test-id="desktop-window-title">{{ title }}</div>
       <div class="close-handler" @click="clickCloseHandler()">X</div>
     </div>
     <div class="desktop-window-body">

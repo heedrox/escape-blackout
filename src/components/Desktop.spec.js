@@ -31,7 +31,7 @@ describe('Desktop.vue', () => {
       wrapper.findComponent(DesktopIcon).vm.$emit('click');
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.findComponent(DesktopWindow).props('title')).toBe('Network');
+      expect(wrapper.findComponent(DesktopWindow).props('title')).toBe('apps.network');
     });
   });
 

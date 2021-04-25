@@ -4,6 +4,7 @@
     "not-your-turn": "No es tu turno"
   },
   "apps": {
+    "network": "Network",
     "chat": "Chat"
   },
   "puzzle1": {

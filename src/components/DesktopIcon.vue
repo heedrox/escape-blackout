@@ -1,6 +1,6 @@
 <template>
   <div class="desktop-icon">
-    <img :src="icon" :alt="text" @click="$emit('click')"/>
+    <img :data-test-id="`desktop-icon-clickable-${text}`" :src="icon" :alt="text" @click="$emit('click')"/>
     <div class="desktop-icon__text">{{ text }}</div>
   </div>
 </template>
