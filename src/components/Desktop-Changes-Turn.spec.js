@@ -2,6 +2,7 @@ import Desktop from './Desktop';
 import { shallowMount } from '@vue/test-utils';
 import GetNumPlayer from '../lib/get-num-player';
 import firebaseUtil from '../lib/firebase/firebase-util';
+import { givenFirestore } from '../test-utils/firestore-test-utils';
 
 const CHANGE_TURN_BTN = '[data-test-id=desktop-change-turn-btn]';
 
@@ -11,11 +12,10 @@ const givenPlayerNumber = (playerNumber) => {
 };
 
 const givenTurnForPlayer = (player) =>
-  firebaseUtil.doc.mockImplementation((path) => {
-    if (path === '/') return { turn: player }
-    return { [`stagePlayer${player}`]: 1 };
+  givenFirestore({
+    '/puzzle-status/puzzle-1': { [`stagePlayer${player}`]: 1 },
+    '/': { turn: player }
   });
-
 
 describe('Desktop has a button to change turn', () => {
 
