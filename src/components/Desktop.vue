@@ -1,15 +1,23 @@
 <template>
-  <div>
-    <desktop-icon text="Network" :icon="require('./puzzle-1/puzzle-1-icon.svg')"
+  <div class="desktop">
+    <desktop-icon class="app" text="Network" :icon="require('./puzzle-1/puzzle-1-icon.svg')"
     @click="clickDesktopIcon()"></desktop-icon>
     <desktop-window
         v-if="showDesktopWindow" title="Network" @close="closeDesktopIcon"
         :icon="require('./puzzle-1/puzzle-1-icon.svg')">
     </desktop-window>
-    <div v-if="globalStatus['app-chat']">{{ $t('apps.chat') }}</div>
+    <desktop-icon class="app" v-if="globalStatus['app-chat']" :text="$t('apps.chat')" :icon="require('./puzzle-2/puzzle-2-icon.svg')"></desktop-icon>
     <input v-if="playersTurn" type="button" class="desktop-change-turn-btn" data-test-id="desktop-change-turn-btn" value="Change turn" @click="clickChangeTurnBtn()">
   </div>
 </template>
+<style>
+.desktop {
+  display: flex;
+}
+.desktop .app {
+  margin-right: 3vw;
+}
+</style>
 <script>
 import DesktopIcon from './DesktopIcon';
 import DesktopWindow from './DesktopWindow';
