@@ -1,8 +1,7 @@
 import Desktop from './Desktop';
 import { shallowMount } from '@vue/test-utils';
 import GetNumPlayer from '../lib/get-num-player';
-import firebaseUtil from '../lib/firebase/firebase-util';
-import { givenFirestore } from '../test-utils/firestore-test-utils';
+import { getUpdatedField, givenFirestore } from '../test-utils/firestore-test-utils';
 
 const CHANGE_TURN_BTN = '[data-test-id=desktop-change-turn-btn]';
 
@@ -19,22 +18,17 @@ const givenTurnForPlayer = (player) =>
 
 describe('Desktop has a button to change turn', () => {
 
-  it('does not show the button when its not your turn', () => {
-    givenPlayerNumber(1);
-    givenTurnForPlayer(2);
+  it.each`
+  playerNumber | playerTurn | btnShouldExist
+  ${1}         | ${2}       | ${false}
+  ${1}         | ${1}       | ${true}
+  `('shows the button ONLY when its your turn', ({playerNumber, playerTurn, btnShouldExist}) => {
+    givenPlayerNumber(playerNumber);
+    givenTurnForPlayer(playerTurn);
 
     const desktop = shallowMount(Desktop)
 
-    expect(desktop.find(CHANGE_TURN_BTN).exists()).toBeFalsy();
-  });
-
-  it('shows the button ONLY when its your turn', () => {
-    givenPlayerNumber(1);
-    givenTurnForPlayer(1);
-
-    const desktop = shallowMount(Desktop)
-
-    expect(desktop.find(CHANGE_TURN_BTN).exists()).toBeTruthy();
+    expect(desktop.find(CHANGE_TURN_BTN).exists()).toBe(btnShouldExist)
   });
 
   it.each`
@@ -46,10 +40,10 @@ describe('Desktop has a button to change turn', () => {
     givenTurnForPlayer(turnOfPlayer);
     const desktop = shallowMount(Desktop)
 
-    desktop.find(CHANGE_TURN_BTN).trigger('click');
+    desktop.find(CHANGE_TURN_BTN).vm.$emit('click');
     await desktop.vm.$nextTick();
 
     expect(desktop.find(CHANGE_TURN_BTN).exists()).toBeFalsy();
-    expect(desktop.vm.$firestoreRefs.globalStatus.update.mock.calls[0][0].turn).toBe(updatedTurnOfPlayer);
+    expect(getUpdatedField(desktop, 'globalStatus', 'turn')).toBe(updatedTurnOfPlayer);
   });
 })

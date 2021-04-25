@@ -4,13 +4,14 @@
     @click="clickDesktopIcon(AppsList.NETWORK)"></desktop-icon>
     <desktop-icon class="app" v-if="globalStatus['app-chat']" :text="$t(AppsList.CHAT.title)" :icon="AppsList.CHAT.icon()"
                   @click="clickDesktopIcon(AppsList.CHAT)"></desktop-icon>
-
+    <desktop-icon class="app" v-if="playersTurn"  :text="$t(AppsList.CHANGE_TURN.title)" :icon="AppsList.CHANGE_TURN.icon()"
+                  data-test-id="desktop-change-turn-btn"  @click="clickChangeTurnBtn()">
+    </desktop-icon>
     <desktop-window
         v-if="showDesktopWindow" :title="$t(selectedApp.title)" @close="closeDesktopIcon"
         :icon="selectedApp.icon()"
         :component="selectedApp.component">
     </desktop-window>
-    <input v-if="playersTurn" type="button" class="desktop-change-turn-btn" data-test-id="desktop-change-turn-btn" value="Change turn" @click="clickChangeTurnBtn()">
   </div>
 </template>
 <style>

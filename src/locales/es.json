@@ -5,7 +5,8 @@
   },
   "apps": {
     "network": "Network",
-    "chat": "Chat"
+    "chat": "Chat",
+    "change-turn": "Delegar control"
   },
   "puzzle1": {
     "intro-message-1": "Te doy la bienvenida.",
