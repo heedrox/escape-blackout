@@ -1,3 +1,7 @@
+import firebaseUtil from '../lib/firebase/firebase-util';
+
+const givenFirestore = (mappings) =>
+  firebaseUtil.doc.mockImplementation((path) => mappings[path]);
 
 const getUpdatedField = (wrapper, firestoreRef, field) => {
   const mock = wrapper.vm.$firestoreRefs[firestoreRef];
@@ -7,5 +11,6 @@ const getUpdatedField = (wrapper, firestoreRef, field) => {
 };
 
 export {
+  givenFirestore,
   getUpdatedField
 }
