@@ -14,7 +14,7 @@ img {
   height: auto;
 }
 .desktop-icon__text {
-  font-size: small;
+  font-size: 2vw;
 }
 </style>
 <script>
