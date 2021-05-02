@@ -15,15 +15,22 @@ import GetNumPlayer from '../../lib/get-num-player';
 
 export default {
   name: 'chat',
+  computed: {
+    playersTurn() {
+      return this.globalStatus.turn === GetNumPlayer.get()
+    }
+  },
   data() {
    return {
+     globalStatus: { loaded: false },
      messages: [],
      messageSent: ''
    };
   },
   firestore() {
     return {
-      messages: firebaseUtil.collection('/chat', { field: "timestamp", direction: "asc"})
+      messages: firebaseUtil.collection('/chat', { field: "timestamp", direction: "asc"}),
+      globalStatus: firebaseUtil.doc('/')
     };
   },
   methods: {
