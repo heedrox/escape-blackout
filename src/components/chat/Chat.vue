@@ -23,12 +23,13 @@ export default {
   },
   firestore() {
     return {
-      messages: firebaseUtil.collection('/chat')
+      messages: firebaseUtil.collection('/chat', { field: "timestamp", direction: "asc"})
     };
   },
   methods: {
     sendMessage() {
-      this.$firestoreRefs.messages.add({ message: this.messageSent,
+      firebaseUtil.addToCollection('/chat', {
+        message: this.messageSent,
         player: GetNumPlayer.get(),
         timestamp: firebaseUtil.serverTimestamp()
       });

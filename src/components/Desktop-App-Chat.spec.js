@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import Desktop from './Desktop.vue'
-import { givenFirestore } from '../test-utils/firestore-test-utils';
+import { givenFirestore, givenFirestoreCollection } from '../test-utils/firestore-test-utils';
 import DesktopIcon from './DesktopIcon';
 import Chat from './chat/Chat';
 
@@ -46,6 +46,9 @@ describe('Desktop App Chat.vue', () => {
     givenFirestore({
       '/puzzle-status/puzzle-1': {},
       '/': { 'app-chat': true }
+    });
+    givenFirestoreCollection({
+      '/chat': []
     });
     const desktop = mount(Desktop);
 

@@ -24,7 +24,8 @@ init();
 const firebaseUtil = {
   login: () => auth.signInWithEmailAndPassword(dbOptions.customEscape.auth.email, dbOptions.customEscape.auth.password),
   doc: (path) => firestore.doc(`${FIREBASE_URL}${path}`),
-  collection: (path) => firestore.collection(`${FIREBASE_URL}${path}`),
+  collection: (path, orderBy) => firestore.collection(`${FIREBASE_URL}${path}`).orderBy(orderBy.field, orderBy.direction),
+  addToCollection: (path, doc) => firestore.collection(`${FIREBASE_URL}${path}`).add(doc),
   serverTimestamp: () => firebase.firestore.FieldValue.serverTimestamp()
 };
 
