@@ -32,6 +32,7 @@ export default {
         player: GetNumPlayer.get(),
         timestamp: firebaseUtil.serverTimestamp()
       });
+      this.messageSent = '';
     }
   }
 };

@@ -28,7 +28,6 @@ describe('Chat', () => {
       const chat = mount(Chat);
 
       const messages = chat.findAll('[data-test-id*=message]');
-
       expect(messages.length).toEqual(expectedMessages.length);
       expectedMessages.forEach(expectedMessage => {
         expect(messages.filter(m => m.text() === expectedMessage).exists()).toBeTruthy();
@@ -43,38 +42,40 @@ describe('Chat', () => {
       expect(chat.find('[data-test-id=input-text]').exists()).toBeTruthy();
     });
 
-    it('adds message when <RETURN> is typed', () => {
-      const chat = mount(Chat);
 
-      chat.find('[data-test-id=input-text]').setValue(A_TYPED_MESSAGE);
-      chat.find('[data-test-id=input-submit').trigger('submit');
+    describe('when sending message', () => {
 
-      expect(chat.vm.$firestoreRefs.messages.add.mock.calls.length).toEqual(1);
-      const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
-      expect(theMessage.message).toEqual(A_TYPED_MESSAGE);
+      let chat;
+
+      beforeEach(() => {
+        givenPlayerNumber(1);
+        chat = mount(Chat);
+
+        chat.find('[data-test-id=input-text]').setValue(A_TYPED_MESSAGE);
+        chat.find('[data-test-id=input-submit').trigger('submit');
+      });
+
+      it('adds message', () => {
+        expect(chat.vm.$firestoreRefs.messages.add.mock.calls.length).toEqual(1);
+        const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
+        expect(theMessage.message).toEqual(A_TYPED_MESSAGE);
+      });
+
+      it('adds player number', () => {
+        const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
+        expect(theMessage.player).toEqual(1);
+      });
+
+      it('adds timestamp ', () => {
+        const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
+        expect(theMessage.timestamp.isTimestamp).toBeTruthy();
+      });
+
+      it('clears the input text', () => {
+        expect(chat.find('[data-test-id=input-text]').element.value).toEqual('');
+      });
     });
 
-    it('adds player number when sending message', () => {
-      givenPlayerNumber(1);
-      const chat = mount(Chat);
-
-      chat.find('[data-test-id=input-text]').setValue(A_TYPED_MESSAGE);
-      chat.find('[data-test-id=input-submit').trigger('submit');
-
-      const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
-      expect(theMessage.player).toEqual(1);
-    });
-
-    it('adds timestamp when sending message', () => {
-      givenPlayerNumber(1);
-      const chat = mount(Chat);
-
-      chat.find('[data-test-id=input-text]').setValue(A_TYPED_MESSAGE);
-      chat.find('[data-test-id=input-submit').trigger('submit');
-
-      const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
-      expect(theMessage.timestamp.isTimestamp).toBeTruthy();
-    });
     // solo puedes mandar mensajes en tu turno
   })
 
