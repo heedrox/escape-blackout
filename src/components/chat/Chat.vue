@@ -11,6 +11,7 @@
 </template>
 <script>
 import firebaseUtil from '../../lib/firebase/firebase-util';
+import GetNumPlayer from '../../lib/get-num-player';
 
 export default {
   name: 'chat',
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.$firestoreRefs.messages.add({ message: this.messageSent });
+      this.$firestoreRefs.messages.add({ message: this.messageSent, player: GetNumPlayer.get() });
     }
   }
 };

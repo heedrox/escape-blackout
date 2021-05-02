@@ -3,10 +3,9 @@ import 'firebase/firestore'
 import 'firebase/auth'
 import dbOptions from '../../config/db-options';
 
-
 const isTestEnv = () => process && process.env && process.env['NODE_ENV'] === 'test';
 
-let auth, firestore;
+let auth, firestore, Timestamp;
 
 const GAME_CODE = 'codigo-juego-1';
 
@@ -17,6 +16,7 @@ const init = () => {
   firebase.initializeApp(dbOptions);
   auth = firebase.auth();
   firestore = firebase.firestore();
+  Timestamp = firestore.Timestamp;
   console.log('inicializado');
 };
 
@@ -26,6 +26,7 @@ const firebaseUtil = {
   login: () => auth.signInWithEmailAndPassword(dbOptions.customEscape.auth.email, dbOptions.customEscape.auth.password),
   doc: (path) => firestore.doc(`${FIREBASE_URL}${path}`),
   collection: (path) => firestore.collection(`${FIREBASE_URL}${path}`),
+  Timestamp
 };
 
 export default firebaseUtil;

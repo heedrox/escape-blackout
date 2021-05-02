@@ -54,7 +54,7 @@ describe('Chat', () => {
       expect(theMessage.message).toEqual(A_TYPED_MESSAGE);
     });
 
-    it.skip('adds player number when sending message', () => {
+    it('adds player number when sending message', () => {
       givenPlayerNumber(1);
       const chat = mount(Chat);
 
