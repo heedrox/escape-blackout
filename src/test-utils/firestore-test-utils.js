@@ -13,8 +13,15 @@ const getUpdatedField = (wrapper, firestoreRef, field) => {
   return theCall ? theCall[0][field] : undefined;
 };
 
+const getLastAddedDocument = (path) => {
+  const pathCalls = firebaseUtil.addToCollection.mock.calls.filter(call => call[0] === path);
+  if (pathCalls.length === 0) return null;
+  return pathCalls[pathCalls.length - 1][1];
+};
+
 export {
   givenFirestore,
   givenFirestoreCollection,
-  getUpdatedField
+  getUpdatedField,
+  getLastAddedDocument
 }

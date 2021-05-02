@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import Chat from './Chat';
-import { givenFirestoreCollection } from '../../test-utils/firestore-test-utils';
+import { getLastAddedDocument, givenFirestoreCollection } from '../../test-utils/firestore-test-utils';
 import { givenPlayerNumber } from '../../test-utils/game-test-utils';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 
@@ -63,7 +63,6 @@ describe('Chat', () => {
       let chat;
 
       beforeEach(() => {
-        firebaseUtil.addToCollection = jest.fn();
         givenPlayerNumber(1);
         chat = mount(Chat);
 
@@ -72,18 +71,17 @@ describe('Chat', () => {
       });
 
       it('adds message', () => {
-        expect(firebaseUtil.addToCollection.mock.calls.length).toEqual(1);
-        const theMessage = firebaseUtil.addToCollection.mock.calls[0][1];
+        const theMessage = getLastAddedDocument('/chat');
         expect(theMessage.message).toEqual(A_TYPED_MESSAGE);
       });
 
       it('adds player number', () => {
-        const theMessage = firebaseUtil.addToCollection.mock.calls[0][1];
+        const theMessage = getLastAddedDocument('/chat');
         expect(theMessage.player).toEqual(1);
       });
 
       it('adds timestamp ', () => {
-        const theMessage = firebaseUtil.addToCollection.mock.calls[0][1];
+        const theMessage = getLastAddedDocument('/chat');
         expect(theMessage.timestamp.isTimestamp).toBeTruthy();
       });
 
