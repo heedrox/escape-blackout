@@ -4,7 +4,8 @@ import MockVueFire from './MockVueFire';
 
 jest.mock('@/lib/firebase/firebase-util.js', () => ({
   doc: jest.fn(() => ({ mocked: true })),
-  collection: jest.fn( () => [ { mocked: true }])
+  collection: jest.fn( () => [ { mocked: true }]),
+  serverTimestamp: jest.fn( () => ({ isTimestamp: true }))
 }));
 
 Vue.use(MockVueFire);

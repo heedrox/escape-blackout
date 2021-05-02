@@ -64,6 +64,17 @@ describe('Chat', () => {
       const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
       expect(theMessage.player).toEqual(1);
     });
+
+    it('adds timestamp when sending message', () => {
+      givenPlayerNumber(1);
+      const chat = mount(Chat);
+
+      chat.find('[data-test-id=input-text]').setValue(A_TYPED_MESSAGE);
+      chat.find('[data-test-id=input-submit').trigger('submit');
+
+      const theMessage = chat.vm.$firestoreRefs.messages.add.mock.calls[0][0];
+      expect(theMessage.timestamp.isTimestamp).toBeTruthy();
+    });
     // solo puedes mandar mensajes en tu turno
   })
 

@@ -28,7 +28,10 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.$firestoreRefs.messages.add({ message: this.messageSent, player: GetNumPlayer.get() });
+      this.$firestoreRefs.messages.add({ message: this.messageSent,
+        player: GetNumPlayer.get(),
+        timestamp: firebaseUtil.serverTimestamp()
+      });
     }
   }
 };
