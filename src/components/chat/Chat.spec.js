@@ -2,49 +2,34 @@ import { mount } from '@vue/test-utils';
 import Chat from './Chat';
 import { givenFirestoreCollection } from '../../test-utils/firestore-test-utils';
 
+const aDoc = (player, message, timestamp) => ({player, message, timestamp});
 const A_MESSAGE = 'This is A message';
+
 const ANOTHER_MESSAGE = 'This is ANOTHER message';
 
-const aDoc = (player, message, timestamp) => ({player, message, timestamp});
+const A_DOC = aDoc(1, A_MESSAGE, null);
+const ANOTHER_DOC = aDoc(2, ANOTHER_MESSAGE, null);
 
 describe('Chat', () => {
   describe('Shows messages', () => {
-    it('shows no messages when there are not messages', () => {
+    it.each`
+    docsInFirestore           | expectedMessages
+    ${[]}                     | ${[]}
+    ${[ A_DOC ]}              | ${[ A_DOC.message ]}
+    ${[ A_DOC, ANOTHER_DOC ]} | ${[ A_DOC.message, ANOTHER_DOC.message ]}
+    `('shows messages with messages: $expectedMessages', ({ docsInFirestore, expectedMessages }) => {
       givenFirestoreCollection({
-        '/chat': [ ]
+        '/chat': docsInFirestore
       });
 
       const chat = mount(Chat);
 
-      expect(chat.findAll('[data-test-id*=message]').length).toEqual(0);
-    });
+      const messages = chat.findAll('[data-test-id*=message]');
 
-    it('shows one message when there is message', () => {
-      givenFirestoreCollection({
-        '/chat': [ aDoc(1, A_MESSAGE, null) ]
+      expect(messages.length).toEqual(expectedMessages.length);
+      expectedMessages.forEach(expectedMessage => {
+        expect(messages.filter(m => m.text() === expectedMessage).exists()).toBeTruthy();
       });
-
-
-      const chat = mount(Chat);
-
-      expect(chat.findAll('[data-test-id*=message]').length).toEqual(1);
-      expect(chat.findAll('[data-test-id*=message]').at(0).text()).toEqual(A_MESSAGE);
-    });
-
-    it('shows two messages when there are two messages', () => {
-      givenFirestoreCollection({
-        '/chat': [
-          aDoc(1, A_MESSAGE, null),
-          aDoc(2, ANOTHER_MESSAGE, null),
-        ]
-      });
-
-
-      const chat = mount(Chat);
-
-      expect(chat.findAll('[data-test-id*=message]').length).toEqual(2);
-      expect(chat.findAll('[data-test-id*=message]').at(0).text()).toEqual(A_MESSAGE);
-      expect(chat.findAll('[data-test-id*=message]').at(1).text()).toEqual(ANOTHER_MESSAGE);
     });
   });
 
