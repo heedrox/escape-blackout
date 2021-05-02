@@ -1,6 +1,12 @@
 <template>
-  <div>app chat
-    <div v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0"> {{ msg.message }}</div>
+  <div>
+    <div v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0">
+      {{msg.player}}> {{ msg.message }}
+    </div>
+    <form @submit.prevent="sendMessage">
+      <input type="text" data-test-id="input-text" v-model="messageSent"/>
+      <input type="submit" data-test-id="input-submit" value=">">
+    </form>
   </div>
 </template>
 <script>
@@ -10,13 +16,19 @@ export default {
   name: 'chat',
   data() {
    return {
-     messages: []
+     messages: [],
+     messageSent: ''
    };
   },
   firestore() {
     return {
       messages: firebaseUtil.collection('/chat')
     };
+  },
+  methods: {
+    sendMessage() {
+      this.$firestoreRefs.messages.add({ message: this.messageSent });
+    }
   }
 };
 </script>

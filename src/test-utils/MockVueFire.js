@@ -22,6 +22,7 @@ const MockVueFire = {
             this.$firestoreRefs[key] = {
               set: jest.fn(newValue => { this[key] = newValue; }),
               update: jest.fn(newValue => { this[key] = newValue; }),
+              add: jest.fn( newValue => { this[key].push(newValue); })
             };
           }));
         }
