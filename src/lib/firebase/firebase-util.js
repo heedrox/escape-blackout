@@ -25,6 +25,7 @@ init();
 const firebaseUtil = {
   login: () => auth.signInWithEmailAndPassword(dbOptions.customEscape.auth.email, dbOptions.customEscape.auth.password),
   doc: (path) => firestore.doc(`${FIREBASE_URL}${path}`),
+  collection: (path) => firestore.collection(`${FIREBASE_URL}${path}`),
 };
 
 export default firebaseUtil;

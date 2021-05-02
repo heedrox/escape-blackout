@@ -1,4 +1,5 @@
 const isYeelightInstalled = () => {
+  return false;
   try {
     require.resolve("jest-plugin-yeelight");
     console.log("jest-plugin-yeelight is installed. Yeelight will change per every test result :) .");
