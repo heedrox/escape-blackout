@@ -5,7 +5,7 @@ import { givenPlayerNumber } from '../../test-utils/game-test-utils';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 import GetNumPlayer from '../../lib/get-num-player';
 
-const aDoc = (player, message, timestamp) => ({player, message, timestamp});
+const aDoc = (player, message, timestamp) => ({ player, message, timestamp });
 const A_MESSAGE = 'This is A message';
 
 const ANOTHER_MESSAGE = 'This is ANOTHER message';
@@ -28,12 +28,18 @@ const givenTurnForPlayer = (player) =>
   });
 
 describe('Chat', () => {
+
+  beforeEach(() => {
+    givenPlayerNumber(1);
+    givenTurnForPlayer(1);
+  });
+
   describe('Shows messages', () => {
     it.each`
     docsInFirestore           | expectedMessages
     ${[]}                     | ${[]}
-    ${[ A_DOC ]}              | ${[ `${A_DOC.player}> ${A_DOC.message}` ]}
-    ${[ A_DOC, ANOTHER_DOC ]} | ${[ `${A_DOC.player}> ${A_DOC.message}`, `${ANOTHER_DOC.player}> ${ANOTHER_DOC.message}` ]}
+    ${[A_DOC]}              | ${[`${A_DOC.player}> ${A_DOC.message}`]}
+    ${[A_DOC, ANOTHER_DOC]} | ${[`${A_DOC.player}> ${A_DOC.message}`, `${ANOTHER_DOC.player}> ${ANOTHER_DOC.message}`]}
     `('shows messages with messages: $expectedMessages', ({ docsInFirestore, expectedMessages }) => {
       givenFirestoreCollection({
         '/chat': docsInFirestore
@@ -50,7 +56,7 @@ describe('Chat', () => {
 
     it('shows them sorted by timestamp desc', () => {
       givenFirestoreCollection({
-        '/chat': [ A_DOC_SUPER_OLD, A_DOC_OLD, A_DOC_RECENT ]
+        '/chat': [A_DOC_SUPER_OLD, A_DOC_OLD, A_DOC_RECENT]
       });
 
       mount(Chat);
@@ -100,26 +106,23 @@ describe('Chat', () => {
     });
 
     describe('Checking turn for sending', () => {
-      describe('when it is your turn', () => {
-        it.todo('en vez de mostrar un overlay, lo que haremos sera habilitar / deshabilitar input');
-        it.skip('enables the input text', () => {
-          givenPlayerNumber(1);
-          givenTurnForPlayer(1);
+      it('shows the input text when it is your turn', () => {
+        givenPlayerNumber(1);
+        givenTurnForPlayer(1);
 
-          const chat = mount(Chat);
+        const chat = mount(Chat);
 
-          // expect(...).not.toBeDisabled();
-        });
+        expect(chat.find('[data-test-id=input-text]').exists()).toBeTruthy();
+        expect(chat.find('[data-test-id=input-submit]').exists()).toBeTruthy();
       });
-      describe('when it is NOT your turn', () => {
-        it.skip('disables the input text', () => {
-          givenPlayerNumber(1);
-          givenTurnForPlayer(2);
+      it('disables the input text when it is NOT your turn', () => {
+        givenPlayerNumber(1);
+        givenTurnForPlayer(2);
 
-          const chat = mount(Chat);
+        const chat = mount(Chat);
 
-          // expect(...).toBeDisabled();
-        });
+        expect(chat.find('[data-test-id=input-text]').exists()).toBeFalsy();
+        expect(chat.find('[data-test-id=input-submit]').exists()).toBeFalsy();
       });
     });
   })

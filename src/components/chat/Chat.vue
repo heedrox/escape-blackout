@@ -3,7 +3,7 @@
     <div v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0">
       {{msg.player}}> {{ msg.message }}
     </div>
-    <form @submit.prevent="sendMessage">
+    <form @submit.prevent="sendMessage" v-if="playersTurn">
       <input type="text" data-test-id="input-text" v-model="messageSent"/>
       <input type="submit" data-test-id="input-submit" value=">">
     </form>
