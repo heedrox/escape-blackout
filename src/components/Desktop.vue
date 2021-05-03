@@ -4,9 +4,10 @@
     @click="clickDesktopIcon(AppsList.NETWORK)"></desktop-icon>
     <desktop-icon class="app" v-if="globalStatus['app-chat']" :text="$t(AppsList.CHAT.title)" :icon="AppsList.CHAT.icon()"
                   @click="clickDesktopIcon(AppsList.CHAT)"></desktop-icon>
-    <desktop-icon class="app" v-if="playersTurn"  :text="$t(AppsList.CHANGE_TURN.title)" :icon="AppsList.CHANGE_TURN.icon()"
-                  data-test-id="desktop-change-turn-btn"  @click="clickChangeTurnBtn()">
-    </desktop-icon>
+    <desktop-icon class="app" v-if="globalStatus['puzzle'] >= 2" :text="$t(AppsList.FILE_EXPLORER.title)" :icon="AppsList.FILE_EXPLORER.icon()"
+                  @click="clickDesktopIcon(AppsList.FILE_EXPLORER)"></desktop-icon>
+    <desktop-icon class="app" v-if="playersTurn" :text="$t(AppsList.CHANGE_TURN.title)" :icon="AppsList.CHANGE_TURN.icon()"
+                  data-test-id="desktop-change-turn-btn"  @click="clickChangeTurnBtn()"></desktop-icon>
     <desktop-window
         v-if="showDesktopWindow" :title="$t(selectedApp.title)" @close="closeDesktopIcon"
         :icon="selectedApp.icon()"

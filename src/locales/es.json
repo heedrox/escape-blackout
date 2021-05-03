@@ -6,7 +6,8 @@
   "apps": {
     "network": "Network",
     "chat": "Chat",
-    "change-turn": "Delegar control"
+    "change-turn": "Delegar control",
+    "file-explorer": "Archivos"
   },
   "puzzle1": {
     "intro-message-1": "Te doy la bienvenida.",

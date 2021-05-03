@@ -1,6 +1,7 @@
 import Chat from './chat/Chat';
 import Puzzle1 from './puzzle-1/Puzzle1';
 import ChangeTurn from './change-turn/ChangeTurn';
+import FileExplorer from './file-explorer/FileExplorer';
 
 export default {
   NETWORK: {
@@ -12,6 +13,11 @@ export default {
     title: 'apps.chat',
     icon: () => require('./chat/chat-icon.svg'),
     component: Chat
+  },
+  FILE_EXPLORER: {
+    title: 'apps.file-explorer',
+    icon: () => require('./file-explorer/file-explorer.svg'),
+    component: FileExplorer
   },
   CHANGE_TURN: {
     title: 'apps.change-turn',
