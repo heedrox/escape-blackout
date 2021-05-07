@@ -50,6 +50,8 @@ describe('File Explorer', () => {
       await fileExplorer.vm.$nextTick();
 
       expect(fileExplorer.find('[data-test-id=zoom-image]').element.getAttribute("src")).toMatch(expectedSrc);
+      expect(fileExplorer.findAll('[data-test-id=file]').at(0).classes().indexOf('selected')).toBe(-1);
+      expect(fileExplorer.findAll('[data-test-id=file]').at(1).classes().indexOf('selected')).toBeGreaterThanOrEqual(0);
     });
   });
 });
