@@ -32,6 +32,8 @@
 </template>
 <style>
 .panel {
+  background: #0f0f0f;
+  opacity:.9;
   border: solid 1px #999;
   width: 60vw;
   height: 70vh;

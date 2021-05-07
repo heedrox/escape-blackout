@@ -1,23 +1,23 @@
 <template>
   <div class="puzzle1">
     <div v-if="!playersTurn" class="puzzle1-turn-overlay" data-test-id="turn-overlay" @click="clickOverlay()">
-      <div v-if="showOverlayMessage">
+      <div class="puzzle1-message" v-if="showOverlayMessage">
         {{ $t('global.not-your-turn') }}
       </div>
     </div>
-    <div v-if="showMessage && (myStage === 1)" class="puzzle1-message">
+    <div v-if="showMessage && (myStage === 1)" class="puzzle1-message terminal-text">
       <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
-      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+      <input class="terminal-button terminal-text" type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage1" v-if="!showMessage && (myStage === 1)" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
-    <div v-if="showMessage && (myStage === 2)">
+    <div v-if="showMessage && (myStage === 2)"  class="puzzle1-message terminal-text">
       <p>{{ $t('puzzle1.intro-message-2') }}</p>
-      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+      <input type="button" class="terminal-button terminal-text" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage2" v-if="!showMessage && (myStage === 2)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :persist-status="false" @complete="completeStage(2)"/>
-    <div v-if="showMessage && (myStage === 3)">
+    <div v-if="showMessage && (myStage === 3)"  class="puzzle1-message terminal-text">
       <p>{{ $t('puzzle1.intro-message-3') }}</p>
-      <input type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
+      <input class="terminal-button terminal-text" type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()" />
     </div>
     <puzzle-1-stage key="puzzle-stage3" v-if="!showMessage && (myStage === 3)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :block-handles="blockHandles" :persist-status="true" @complete="completeStage(3) "/>
   </div>
@@ -38,6 +38,12 @@
 .typing {
   position: relative;
   width: fit-content;
+
+}
+
+.terminal-text{
+  font: 1.2rem Inconsolata, monospace;
+  text-shadow: 0 0 20px #c8c8c8;
 }
 
 .typing::after {
@@ -49,6 +55,19 @@
    background: #000000;
    animation: typing 4s steps(21) forwards,
    caret 1s infinite;
+}
+
+
+.terminal-button {
+  color: white;
+  padding: 0.3rem 1.3rem;
+  background: transparent;
+  border: none;
+}
+
+.terminal-button:hover {
+  border-bottom: 1px solid #009900;
+  box-shadow: 0 0 5px #5cf15c;
 }
 
 @keyframes typing {

@@ -14,6 +14,7 @@
 </template>
 <style scoped>
 .desktop-window {
+  background-image: radial-gradient(rgba(0, 100, 0, 0.75), black 120%);
   position: fixed;
   top: 2.5vh;
   left: 2.5vw;

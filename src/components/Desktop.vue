@@ -22,6 +22,14 @@
 .desktop .app {
   margin-right: 3vw;
 }
+
+.app {
+    text-shadow: 0 0 15px #c8c8c8;
+}
+
+#app {
+    background-image: radial-gradient(rgba(0, 100, 0, 0.75), black 120%);
+}
 </style>
 <script>
 import DesktopIcon from './DesktopIcon';
