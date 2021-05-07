@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flicker">
     <div class="text terminal-text" v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0">
       {{msg.player}}> {{ msg.message }}
     </div>
@@ -42,6 +42,76 @@
 
 .input-message:focus, .input-message:active {
   outline: none;
+}
+
+.flicker {
+    animation: flicker 0.70s;
+    animation-duration: 3s;
+}
+@keyframes flicker {
+  0% {
+    opacity: 0.552;
+  }
+  5% {
+    opacity: 0.48287;
+  }
+  10% {
+    opacity: 0.59134;
+  }
+  15.0% {
+    opacity: 0.79543;
+  }
+  20% {
+    opacity: 0.75134;
+  }
+  25% {
+    opacity: 0.1956;
+  }
+  30.0% {
+    opacity: 0.90687;
+  }
+  35% {
+    opacity: 0.122;
+  }
+  40% {
+    opacity: 0.62254;
+  }
+  45% {
+    opacity: 0.56977;
+  }
+  50% {
+    opacity: 0.9925;
+  }
+  55.0% {
+    opacity: 0.55487;
+  }
+  60.0% {
+    opacity: 0.16607;
+  }
+  65% {
+    opacity: 0.12353;
+  }
+  70% {
+    opacity: 0.2214;
+  }
+  75% {
+    opacity: 0.67908;
+  }
+  80% {
+    opacity: 0.97163;
+  }
+  85.0% {
+    opacity: 0.1275;
+  }
+  90% {
+    opacity: 0.37186;
+  }
+  95% {
+    opacity: 0.24475;
+  }
+  100% {
+    opacity: 0.37221;
+  }
 }
 
 </style>
