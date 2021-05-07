@@ -1,21 +1,21 @@
 <template>
   <div class="puzzle1">
     <div v-if="!playersTurn" class="puzzle1-turn-overlay" data-test-id="turn-overlay" @click="clickOverlay()">
-      <div class="puzzle1-message" v-if="showOverlayMessage">
+      <div class="terminal-text" v-if="showOverlayMessage">
         {{ $t('global.not-your-turn') }}
       </div>
     </div>
-    <div v-if="showMessage && (myStage === 1)" class="puzzle1-message terminal-text">
+    <div v-if="showMessage && (myStage === 1)" class="terminal-text">
       <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
       <input class="terminal-button terminal-text" type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage1" v-if="!showMessage && (myStage === 1)" :initial-status="['XOO', 'OXX', 'XOO']" :persist-status="false" @complete="completeStage(1)"/>
-    <div v-if="showMessage && (myStage === 2)"  class="puzzle1-message terminal-text">
+    <div v-if="showMessage && (myStage === 2)"  class="terminal-text">
       <p>{{ $t('puzzle1.intro-message-2') }}</p>
       <input type="button" class="terminal-button terminal-text" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
     </div>
     <puzzle-1-stage key="puzzle-stage2" v-if="!showMessage && (myStage === 2)" :initial-status="['XOXO', 'OXOX', 'XOXO', 'OXOX']" :persist-status="false" @complete="completeStage(2)"/>
-    <div v-if="showMessage && (myStage === 3)"  class="puzzle1-message terminal-text">
+    <div v-if="showMessage && (myStage === 3)"  class="terminal-text">
       <p>{{ $t('puzzle1.intro-message-3') }}</p>
       <input class="terminal-button terminal-text" type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()" />
     </div>
@@ -31,9 +31,6 @@
   top: 12vh;
 }
 
-.puzzle1-message {
-  padding: 5vw;
-}
 
 .typing {
   position: relative;
@@ -42,6 +39,7 @@
 }
 
 .terminal-text{
+  padding: 5vw;
   font: 1.2rem Inconsolata, monospace;
   text-shadow: 0 0 20px #c8c8c8;
 }
@@ -52,17 +50,17 @@
    right: 0;
    width: 100%;
    color: #009900;
-   background: #000000;
+   background: #000;
    animation: typing 4s steps(21) forwards,
    caret 1s infinite;
 }
 
 
 .terminal-button {
-  color: white;
   padding: 0.3rem 1.3rem;
   background: transparent;
   border: none;
+  color: #fff;
 }
 
 .terminal-button:hover {
@@ -76,6 +74,7 @@
 @keyframes caret {
   50% { color: transparent }
 }
+
 </style>
 <script>
 import Puzzle1Stage from './Puzzle1Stage';
