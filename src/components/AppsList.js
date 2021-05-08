@@ -1,5 +1,6 @@
 import Chat from './chat/Chat';
 import Puzzle1 from './puzzle-1/Puzzle1';
+import Chess from './puzzle-2/Chess';
 import ChangeTurn from './change-turn/ChangeTurn';
 import FileExplorer from './file-explorer/FileExplorer';
 
@@ -18,6 +19,11 @@ export default {
     title: 'apps.file-explorer',
     icon: () => require('./file-explorer/file-explorer.svg'),
     component: FileExplorer
+  },
+  CHESS: {
+    title: 'apps.chess',
+    icon: () => require('./puzzle-2/chess-icon.png'),
+    component: Chess
   },
   CHANGE_TURN: {
     title: 'apps.change-turn',
