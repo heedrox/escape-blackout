@@ -1,18 +1,35 @@
 <template>
   <div class="flicker">
-    <div class="text terminal-text" v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0">
-      {{msg.player}}> {{ msg.message }}
+    <div class="chat-window">
+      <div class="text terminal-text" v-for="(msg, idx) in messages" :key="`message-${idx}`" data-test-id="message-0">
+        {{msg.player}}> {{ msg.message }}
+      </div>
     </div>
-    <form @submit.prevent="sendMessage" v-if="playersTurn">
+    <form class="chat-form" @submit.prevent="sendMessage" v-if="playersTurn">
       <input class="input-message terminal-text" placeholder=">" type="text" data-test-id="input-text" v-model="messageSent"/>
       <input class="terminal-button  terminal-text" type="submit" data-test-id="input-submit" value="INTRO">
     </form>
   </div>
 </template>
 <style scoped>
+.chat-window {
+  height: 77vh;
+  overflow-y: scroll;
+}
+.chat-form {
+  bottom: 20vh;
+  overflow: hidden;
+  border-top: solid 1px #999;
+  padding: 1.5vh 2vw;
+  display:flex;
+}
 .text {
   margin: 0.6rem 0.5rem 0 1rem;
   color: white;
+}
+
+.text:last-child {
+  margin-bottom: 0.6rem;
 }
 
 .terminal-button {
@@ -20,6 +37,7 @@
   padding: 0.3rem 1.3rem;
   background: transparent;
   border: none;
+  margin-left: auto;
 }
 
 .terminal-button:hover {
@@ -30,13 +48,13 @@
 .input-message {
   background: transparent;
   border: none;
-  margin: 2rem 1rem 1rem 1rem;
   color: white;
   outline: none;
+  width: 100%;
 }
 
 .terminal-text{
-  font: 1.2rem Inconsolata, monospace;
+  font: 1rem Inconsolata, monospace;
   text-shadow: 0 0 20px #c8c8c8;
 }
 
