@@ -63,6 +63,7 @@
   z-index: 10;
   width: 10vh;
   height: 10vh;
+  filter: drop-shadow( 0px 0px 3px #fff )
 }
 
 .cell.piece-ab::before {
