@@ -90,6 +90,21 @@
   background-image: url('./pieces/pn.png');
 }
 
+.cell.piece-pb::before {
+  background-image: url('./pieces/pb.png');
+}
+.cell.piece-tb::before {
+  background-image: url('./pieces/tb.png');
+}
+.cell.piece-ab::before {
+  background-image: url('./pieces/ab.png');
+}
+.cell.piece-rb::before {
+  background-image: url('./pieces/rb.png');
+}
+.cell.piece-cb::before {
+  background-image: url('./pieces/cb.png');
+}
 .cell.movement {
   background-color: rgba(0,90,0,0.5)
 }
@@ -108,9 +123,15 @@ const INITIAL_PIECES = {
   '0-3': 'piece-dn',
   '0-4': 'piece-rn',
   '1-1': 'piece-an',
-  '1-7': 'piece-an',
+  '1-6': 'piece-an',
   '3-0': 'piece-pn',
   '3-3': 'piece-pn',
+  '4-4': 'piece-pb',
+  '6-0': 'piece-tb',
+  '6-2': 'piece-pb',
+  '7-2': 'piece-ab',
+  '7-4': 'piece-rb',
+  '7-5': 'piece-cb',
 };
 
 export default {
