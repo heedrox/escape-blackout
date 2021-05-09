@@ -123,8 +123,12 @@
 </style>
 <script>
 import { POSSIBLE_MOVEMENTS, INITIAL_PIECES } from './chess-constants';
+import GetPlayerNumber from '../../lib/get-num-player';
 
 const byCell = (row, col) => (cell) => cell.row === row && cell.col === col;
+
+const isWhitePiece = (row) => row >= 4;
+const isBlackPiece = (row) => row < 4;
 
 export default {
   name: 'Chess',
@@ -149,7 +153,10 @@ export default {
       }
     },
     clickPiece(clickedRow, clickedCol) {
-      this.pieceClicked = {  clickedRow, clickedCol };
+      if ((GetPlayerNumber.get() === 1 && isWhitePiece(clickedRow)) ||
+          (GetPlayerNumber.get() === 2) && isBlackPiece(clickedRow)) {
+        this.pieceClicked = {  clickedRow, clickedCol };
+      }
     },
     isPossibleMovement(clickedRow, clickedCol, row, col) {
       const possibleMovements = POSSIBLE_MOVEMENTS[`${clickedRow}-${clickedCol}`]
