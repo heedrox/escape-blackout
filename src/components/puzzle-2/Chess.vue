@@ -3,7 +3,10 @@
     <div class="chess-left">
       <div class="chess-board">
         <div v-for="(row) in anArrayOf(8)" :key="`row-${row}`" class="row">
-          <div v-for="(col) in anArrayOf(8)" :key="`cell-${row}-${col}`" :class="getClasses(row, col)" :data-test-id="`cell-${row}-${col}`">
+          <div v-for="(col) in anArrayOf(8)" :key="`cell-${row}-${col}`"
+               :class="getClasses(row, col)"
+               :data-test-id="`cell-${row}-${col}`"
+               @click="clickPiece(row, col)">
           </div>
         </div>
       </div>
@@ -105,39 +108,32 @@
 .cell.piece-cb::before {
   background-image: url('./pieces/cb.png');
 }
-.cell.movement {
-  background-color: rgba(0,90,0,0.5)
+.cell.possible-movement {
+  background-color: rgba(0,90,0,0.5);
+  outline: solid 1px rgb(0,180,0);
 }
 
-.row:nth-child(odd) .cell.movement:nth-child(even) {
+.row:nth-child(odd) .cell.possible-movement:nth-child(even) {
   background-color: rgba(0,50,0,0.8)
 }
-.row:nth-child(even) .cell.movement:nth-child(odd) {
+.row:nth-child(even) .cell.possible-movement:nth-child(odd) {
   background-color: rgba(0,50,0,0.8)
 }
 </style>
 <script>
+import { POSSIBLE_MOVEMENTS, INITIAL_PIECES } from './chess-constants';
 
-const INITIAL_PIECES = {
-  '0-0': 'piece-tn',
-  '0-3': 'piece-dn',
-  '0-4': 'piece-rn',
-  '1-1': 'piece-an',
-  '1-6': 'piece-an',
-  '3-0': 'piece-pn',
-  '3-3': 'piece-pn',
-  '4-4': 'piece-pb',
-  '6-0': 'piece-tb',
-  '6-2': 'piece-pb',
-  '7-2': 'piece-ab',
-  '7-4': 'piece-rb',
-  '7-5': 'piece-cb',
-};
+const byCell = (row, col) => (cell) => cell.row === row && cell.col === col;
 
 export default {
   name: 'Chess',
   mounted() {
 
+  },
+  data() {
+    return {
+      'pieceClicked': null
+    }
   },
   methods: {
     anArrayOf(length) {
@@ -145,8 +141,20 @@ export default {
     },
     getClasses(row, col) {
       const existantPiece = INITIAL_PIECES[`${row}-${col}`];
-      return existantPiece ? ['cell', existantPiece] : ['cell'];
+      return {
+        'cell': true,
+        [`piece-${existantPiece}`]: existantPiece !== undefined,
+        'possible-movement': (this.pieceClicked) && this.isPossibleMovement(this.pieceClicked.clickedRow, this.pieceClicked.clickedCol, row, col)
+      }
+    },
+    clickPiece(clickedRow, clickedCol) {
+      this.pieceClicked = {  clickedRow, clickedCol };
+    },
+    isPossibleMovement(clickedRow, clickedCol, row, col) {
+      const possibleMovements = POSSIBLE_MOVEMENTS[`${clickedRow}-${clickedCol}`]
+      return possibleMovements ? possibleMovements.find(byCell(row, col)) !== undefined : false;
     }
   }
 }
+
 </script>
