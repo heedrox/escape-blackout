@@ -223,7 +223,7 @@ ul.chess-movements-list {
 }
 </style>
 <script>
-import { POSSIBLE_MOVEMENTS, INITIAL_PIECES, PIECES } from './chess-constants';
+import { POSSIBLE_MOVEMENTS, INITIAL_PIECES_BUILDER } from './chess-constants';
 import GetPlayerNumber from '../../lib/get-num-player';
 
 const byCell = (row, col) => (cell) => cell.row === row && cell.col === col;
@@ -231,6 +231,13 @@ const byCell = (row, col) => (cell) => cell.row === row && cell.col === col;
 const isWhitePiece = (row) => row >= 4;
 const isBlackPiece = (row) => row < 4;
 
+const toBoolean = x => !!x;
+const canMove = ( origin, target) => {
+  const possibleMovements = POSSIBLE_MOVEMENTS[`${origin.clickedRow}-${origin.clickedCol}`];
+  return possibleMovements ?
+      toBoolean(possibleMovements.find(m => m.row === target.clickedRow && m.col === target.clickedCol)) :
+      false;
+};
 export default {
   name: 'Chess',
   mounted() {
@@ -238,7 +245,7 @@ export default {
   },
   data() {
     return {
-      piecesLocation: INITIAL_PIECES,
+      piecesLocation: INITIAL_PIECES_BUILDER.build(),
       'pieceClicked': null
     }
   },
@@ -255,9 +262,10 @@ export default {
       }
     },
     clickCell(clickedRow, clickedCol) {
-      if ((this.pieceClicked && this.pieceClicked.clickedRow === 0 && this.pieceClicked.clickedCol === 3) && (clickedRow === 2 && clickedCol === 3)) {
-        this.piecesLocation['0-3'] = undefined;
-        this.piecesLocation['2-3'] = PIECES.BLACK_QUEEN;
+      if (this.pieceClicked && canMove(this.pieceClicked, { clickedRow, clickedCol })) {
+        const movedPiece = this.piecesLocation[`${this.pieceClicked.clickedRow}-${this.pieceClicked.clickedCol}`];
+        this.piecesLocation[`${this.pieceClicked.clickedRow}-${this.pieceClicked.clickedCol}`] = undefined;
+        this.piecesLocation[`${clickedRow}-${clickedCol}`] = movedPiece;
       }
       if (this.piecesLocation[`${clickedRow}-${clickedCol}`] !== undefined) {
         if ((GetPlayerNumber.get() === 1 && isWhitePiece(clickedRow)) ||

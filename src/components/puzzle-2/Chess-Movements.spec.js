@@ -70,17 +70,24 @@ describe('Chess Movements', () => {
       expect(chess.find(THE_CELL(2,3)).classes().indexOf('piece-dn')).toBe(-1);
     });
 
-    it('moves DN', async () => {
+    it.each`
+      originRow | originCol | targetRow | targetCol | movedPiece
+      ${0}      | ${3}      | ${2}      | ${3}      | ${'piece-dn'}
+      ${0}      | ${3}      | ${0}      | ${2}      | ${'piece-dn'}
+      ${0}      | ${3}      | ${0}      | ${1}      | ${'piece-dn'}
+      ${0}      | ${3}      | ${1}      | ${3}      | ${'piece-dn'}
+      ${0}      | ${0}      | ${0}      | ${1}      | ${'piece-tn'}
+    `('moves $movedPiece from $originRow-$originCol to $targetRow-$targetCol', async ( { originRow, originCol, targetRow, targetCol, movedPiece }) => {
       givenPlayerNumber(2);
       const chess = mount(Chess);
-      chess.find(THE_CELL(0, 3)).trigger('click');
+      chess.find(THE_CELL(originRow, originCol)).trigger('click');
       await chess.vm.$nextTick();
 
-      chess.find(THE_CELL(2, 3)).trigger('click');
+      chess.find(THE_CELL(targetRow, targetCol)).trigger('click');
       await chess.vm.$nextTick();
 
-      expect(chess.find(THE_CELL(2,3)).classes().indexOf('piece-dn')).toBeGreaterThanOrEqual(0);
-      expect(chess.find(THE_CELL(0,3)).classes().indexOf('piece-dn')).toBe(-1);
+      expect(chess.find(THE_CELL(targetRow,targetCol)).classes().indexOf(movedPiece)).toBeGreaterThanOrEqual(0);
+      expect(chess.find(THE_CELL(originRow,originCol)).classes().indexOf(movedPiece)).toBe(-1);
     });
 
     it('does not move the DN again', async () => {
@@ -96,7 +103,5 @@ describe('Chess Movements', () => {
 
       expect(chess.findAll('.possible-movement').length).toBe(0);
     });
-    
-    it.todo('moves TN')
   });
 });
