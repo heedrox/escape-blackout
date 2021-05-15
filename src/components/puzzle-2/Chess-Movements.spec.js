@@ -46,4 +46,57 @@ describe('Chess Movements', () => {
     });
     expect(chess.findAll('.possible-movement').length).toBe(possibleMovements.length);
   });
+
+  describe('When moves are executed', () => {
+    it('does not move if DN is not selected', async () => {
+      givenPlayerNumber(2);
+      const chess = mount(Chess);
+      chess.find(THE_CELL(0, 0)).trigger('click');
+      await chess.vm.$nextTick();
+
+      chess.find(THE_CELL(2, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      expect(chess.find(THE_CELL(2,3)).classes().indexOf('piece-dn')).toBe(-1);
+    });
+
+    it('does not move when piece not selected', async () => {
+      givenPlayerNumber(2);
+      const chess = mount(Chess);
+
+      chess.find(THE_CELL(2, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      expect(chess.find(THE_CELL(2,3)).classes().indexOf('piece-dn')).toBe(-1);
+    });
+
+    it('moves DN', async () => {
+      givenPlayerNumber(2);
+      const chess = mount(Chess);
+      chess.find(THE_CELL(0, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      chess.find(THE_CELL(2, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      expect(chess.find(THE_CELL(2,3)).classes().indexOf('piece-dn')).toBeGreaterThanOrEqual(0);
+      expect(chess.find(THE_CELL(0,3)).classes().indexOf('piece-dn')).toBe(-1);
+    });
+
+    it('does not move the DN again', async () => {
+      givenPlayerNumber(2);
+      const chess = mount(Chess);
+      chess.find(THE_CELL(0, 3)).trigger('click');
+      await chess.vm.$nextTick();
+      chess.find(THE_CELL(2, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      chess.find(THE_CELL(0, 3)).trigger('click');
+      await chess.vm.$nextTick();
+
+      expect(chess.findAll('.possible-movement').length).toBe(0);
+    });
+    
+    it.todo('moves TN')
+  });
 });
