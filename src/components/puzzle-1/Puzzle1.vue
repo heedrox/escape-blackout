@@ -29,6 +29,7 @@
   position: fixed;
   width: 95vw;
   top: 12vh;
+  z-index: 100;
 }
 
 
