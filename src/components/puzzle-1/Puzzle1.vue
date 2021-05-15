@@ -1,10 +1,6 @@
 <template>
   <div class="puzzle1">
-    <div v-if="!playersTurn" class="puzzle1-turn-overlay" data-test-id="turn-overlay" @click="clickOverlay()">
-      <div class="terminal-text" v-if="showOverlayMessage">
-        {{ $t('global.not-your-turn') }}
-      </div>
-    </div>
+    <overlay-turn />
     <div v-if="showMessage && (myStage === 1)" class="terminal-text">
       <p class="typing">{{ $t('puzzle1.intro-message-1') }}</p>
       <input class="terminal-button terminal-text" type="button" data-test-id="btn-message-ok" value="OK" @click="hideMessage()"/>
@@ -23,16 +19,6 @@
   </div>
 </template>
 <style scoped>
-.puzzle1-turn-overlay {
-  height: 95vh;
-  background-color: rgba(66,66,66,0.25);
-  position: fixed;
-  width: 95vw;
-  top: 12vh;
-  z-index: 100;
-}
-
-
 .typing {
   position: relative;
   width: fit-content;
@@ -81,11 +67,12 @@
 import Puzzle1Stage from './Puzzle1Stage';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 import GetNumPlayer from '../../lib/get-num-player';
+import OverlayTurn from '../overlay-turn/OverlayTurn';
 import Puzzle1MessagePersistor from './Puzzle1MessagePersistor';
 
 export default {
   name: 'Puzzle1',
-  components: {Puzzle1Stage,},
+  components: {Puzzle1Stage, OverlayTurn },
   computed: {
     myStage() {
       const numPlayer = GetNumPlayer.get();
@@ -96,16 +83,12 @@ export default {
     blockHandles() {
       return GetNumPlayer.get() === 1 ? 'COL' : 'ROW';
     },
-    playersTurn() {
-      return this.globalStatus.turn === GetNumPlayer.get()
-    }
   },
   data() {
     return {
       puzzleStatus: { notloaded: true },
       globalStatus: {},
       showMessage: !Puzzle1MessagePersistor.isSetHidden(),
-      showOverlayMessage: false,
     };
   },
   firestore() {
@@ -134,12 +117,6 @@ export default {
     hideMessage() {
       this.showMessage = false;
       Puzzle1MessagePersistor.setHidden();
-    },
-    clickOverlay() {
-      this.showOverlayMessage = true;
-      setTimeout(() => {
-        this.showOverlayMessage = false;
-      }, 5000);
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
   <div class="chess">
+    <overlay-turn />
     <div class="chess-left">
       <div class="chess-board">
         <div v-for="(row) in anArrayOf(8)" :key="`row-${row}`" class="row">
@@ -221,10 +222,20 @@ ul.chess-movements-list {
     flex-direction: column-reverse;
   }
 }
+
+.overlay-turn {
+  height: 95vh;
+  background-color: rgba(66,66,66,0.25);
+  position: fixed;
+  width: 95vw;
+  top: 12vh;
+  z-index: 100;
+}
 </style>
 <script>
 import { POSSIBLE_MOVEMENTS, INITIAL_PIECES_BUILDER } from './chess-constants';
 import GetPlayerNumber from '../../lib/get-num-player';
+import OverlayTurn from '../overlay-turn/OverlayTurn';
 
 const byCell = (row, col) => (cell) => cell.row === row && cell.col === col;
 
@@ -238,15 +249,17 @@ const canMove = ( origin, target) => {
       toBoolean(possibleMovements.find(m => m.row === target.clickedRow && m.col === target.clickedCol)) :
       false;
 };
+
 export default {
   name: 'Chess',
+  components: { OverlayTurn },
   mounted() {
-
   },
   data() {
     return {
       piecesLocation: INITIAL_PIECES_BUILDER.build(),
-      'pieceClicked': null
+      'pieceClicked': null,
+      globalStatus: { loaded: false }
     }
   },
   methods: {

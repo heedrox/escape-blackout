@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import MockVueFire from '../../test-utils/MockVueFire';
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Puzzle1 from './Puzzle1';
 import Puzzle1Stage from './Puzzle1Stage';
 import firebaseUtil from '../../lib/firebase/firebase-util';
@@ -40,7 +40,7 @@ describe('Puzzle 1 - When Initialized', () => {
       givenPlayerNumber(tc.numPlayer);
       firebaseUtil.doc.mockImplementation(() => (tc.puzzleStatus));
 
-      const puzzle1 = shallowMount(Puzzle1);
+      const puzzle1 = mount(Puzzle1);
       await andIntroductionMessageHasBeenPressed(puzzle1);
 
       const theStage = puzzle1.findComponent(Puzzle1Stage);
@@ -52,7 +52,7 @@ describe('Puzzle 1 - When Initialized', () => {
     givenPlayerNumber(2);
     firebaseUtil.doc.mockImplementation(() => ({ stagePlayer2: 3 }));
 
-    const puzzle1 = shallowMount(Puzzle1);
+    const puzzle1 = mount(Puzzle1);
     await andIntroductionMessageHasBeenPressed(puzzle1);
 
     const theStage = puzzle1.findComponent(Puzzle1Stage);
@@ -63,7 +63,7 @@ describe('Puzzle 1 - When Initialized', () => {
     givenPlayerNumber(1);
     firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
 
-    const puzzle1 = shallowMount(Puzzle1);
+    const puzzle1 = mount(Puzzle1);
     await andIntroductionMessageHasBeenPressed(puzzle1);
 
     const theStage = puzzle1.findComponent(Puzzle1Stage);
@@ -74,7 +74,7 @@ describe('Puzzle 1 - When Initialized', () => {
     givenPlayerNumber(1);
     firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 1 }));
 
-    const puzzle1 = shallowMount(Puzzle1);
+    const puzzle1 = mount(Puzzle1);
     await andIntroductionMessageHasBeenPressed(puzzle1);
 
     const theStage = puzzle1.findComponent(Puzzle1Stage);
@@ -86,7 +86,7 @@ describe('Puzzle 1 - When Initialized', () => {
     givenPlayerNumber(1);
     firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 2 }));
 
-    const puzzle1 = shallowMount(Puzzle1);
+    const puzzle1 = mount(Puzzle1);
     await andIntroductionMessageHasBeenPressed(puzzle1);
 
     const theStage = puzzle1.findComponent(Puzzle1Stage);
@@ -97,7 +97,7 @@ describe('Puzzle 1 - When Initialized', () => {
     givenPlayerNumber(1);
     firebaseUtil.doc.mockImplementation(() => ({ stagePlayer1: 3 }));
 
-    const puzzle1 = shallowMount(Puzzle1);
+    const puzzle1 = mount(Puzzle1);
     await andIntroductionMessageHasBeenPressed(puzzle1);
 
     const theStage = puzzle1.findComponent(Puzzle1Stage);

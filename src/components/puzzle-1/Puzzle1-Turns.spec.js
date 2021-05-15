@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Puzzle1 from './Puzzle1';
 import firebaseUtil from '../../lib/firebase/firebase-util';
 import GetNumPlayer from '../../lib/get-num-player';
@@ -7,6 +7,8 @@ const givenPlayerNumber = (playerNumber) => {
   jest.mock('@/lib/get-num-player.js');
   GetNumPlayer.get = jest.fn(() => playerNumber);
 };
+
+
 
 const THE_OVERLAY = '[data-test-id=turn-overlay]';
 
@@ -23,7 +25,7 @@ describe('Puzzle 1 Stage Controls Turns', () => {
       givenPlayerNumber(1);
       givenTurnForPlayer(1);
 
-      const puzzle = shallowMount(Puzzle1);
+      const puzzle = mount(Puzzle1);
 
       expect(puzzle.find(THE_OVERLAY).exists()).toBeFalsy();
     });
@@ -37,19 +39,19 @@ describe('Puzzle 1 Stage Controls Turns', () => {
     });
 
     it('shows overlay', () => {
-      const puzzle = shallowMount(Puzzle1);
+      const puzzle = mount(Puzzle1);
 
       expect(puzzle.find(THE_OVERLAY).exists()).toBeTruthy();
     });
 
     it('does not show any message', () => {
-      const puzzle = shallowMount(Puzzle1);
+      const puzzle = mount(Puzzle1);
 
       expect(puzzle.find(THE_OVERLAY).text()).not.toMatch('global.not-your-turn');
     });
 
     it('shows a message when when you click on the overlay', async () => {
-      const puzzle = shallowMount(Puzzle1);
+      const puzzle = mount(Puzzle1);
 
       puzzle.find(THE_OVERLAY).trigger('click');
       await puzzle.vm.$nextTick();
@@ -59,7 +61,7 @@ describe('Puzzle 1 Stage Controls Turns', () => {
 
     it('hides message after 5 secs', async () => {
       jest.useFakeTimers();
-      const puzzle = shallowMount(Puzzle1);
+      const puzzle = mount(Puzzle1);
       puzzle.find(THE_OVERLAY).trigger('click');
       await puzzle.vm.$nextTick();
 
