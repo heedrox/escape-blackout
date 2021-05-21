@@ -95,13 +95,12 @@ describe('Chess Movements', () => {
       const chess = mount(Chess);
       chess.find(THE_CELL(0, 3)).trigger('click');
       await chess.vm.$nextTick();
-      chess.find(THE_CELL(2, 3)).trigger('click');
-      await chess.vm.$nextTick();
 
-      chess.find(THE_CELL(0, 3)).trigger('click');
+      chess.find(THE_CELL(2, 3)).trigger('click');
       await chess.vm.$nextTick();
 
       expect(chess.findAll('.possible-movement').length).toBe(0);
     });
   });
+
 });
