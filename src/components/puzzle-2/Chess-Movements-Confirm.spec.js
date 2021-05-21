@@ -34,27 +34,34 @@ describe('Chess Movements can be confirmed', () => {
     expect(chess.find(MOVEMENT_CONFIRM_ALERT).exists()).toBeTruthy();
   });
 
-  it('hides the confirm movement alert when NO is selected', async () => {
-    givenPlayerNumber(2);
-    const chess = mount(Chess);
+  describe('when NO is selected', () => {
+
+    let chess = null;
+
+    beforeEach(async () => {
+      givenPlayerNumber(2);
+      chess = mount(Chess);
+      await clickButton(chess, THE_CELL_ORIGIN);
+      await clickButton(chess, THE_CELL_TARGET);
+
+      await clickButton(chess, '[data-test-id=movement-confirm-alert-btn-no]');
+    });
+
+    it('hides the confirm movement alert', async () => {
+      expect(chess.find(MOVEMENT_CONFIRM_ALERT).exists()).toBeFalsy();
+    });
+
+    it('undos the movement', async () => {
+      expect(chess.find(THE_CELL_ORIGIN).classes().indexOf(THE_MOVED_PIECE)).toBeGreaterThanOrEqual(0);
+      expect(chess.find(THE_CELL_TARGET).classes().indexOf(THE_MOVED_PIECE)).toBe(-1);
+    });
+
+    it.todo('resets the movement when NO is selected'/*, async () => {
     await clickButton(chess, THE_CELL_ORIGIN);
-    await clickButton(chess, THE_CELL_TARGET);
 
-    await clickButton(chess, '[data-test-id=movement-confirm-alert-btn-no]');
+    expect(chess.findAll('.possible-movement').length).toBeGreaterThan(0);
+  }*/);
 
-    expect(chess.find(MOVEMENT_CONFIRM_ALERT).exists()).toBeFalsy();
-  });
-
-  it('undos the movement when NO is selected', async () => {
-    givenPlayerNumber(2);
-    const chess = mount(Chess);
-    await clickButton(chess, THE_CELL_ORIGIN);
-    await clickButton(chess, THE_CELL_TARGET);
-
-    await clickButton(chess, '[data-test-id=movement-confirm-alert-btn-no]');
-
-    expect(chess.find(THE_CELL_ORIGIN).classes().indexOf(THE_MOVED_PIECE)).toBeGreaterThanOrEqual(0);
-    expect(chess.find(THE_CELL_TARGET).classes().indexOf(THE_MOVED_PIECE)).toBe(-1);
   });
 
 });
