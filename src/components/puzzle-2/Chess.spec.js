@@ -2,8 +2,13 @@ import { mount } from '@vue/test-utils';
 import Chess from './Chess';
 import { givenPlayerNumber } from '../../test-utils/game-test-utils';
 import { givenFirestore } from '../../test-utils/firestore-test-utils';
+import { INITIAL_PIECES_BUILDER, PIECES } from './chess-constants';
+import blankGameCodeBuilder from '../../lib/blank-game-code-builder';
 
 const THE_OVERLAY = '[data-test-id=turn-overlay]';
+
+const THE_CELL = (row,col) => `[data-test-id=cell-${row}-${col}]`;
+const THE_PIECE = piece => `piece-${piece}`;
 
 describe('Chess', () => {
   it('starts with a chess board', () => {
@@ -28,15 +33,38 @@ describe('Chess', () => {
   ${7}  | ${4}   | ${'rb'}
   ${7}  | ${5}   | ${'cb'}
 
-  `('shows pieces on each initial stage - $row / $col', ( { row, col, piece }) => {
-    const chess = mount(Chess);
+  `('shows pieces on each initial stage - $row / $col - $piece', async ( { row, col, piece }) => {
+    givenFirestore({
+      '/': { turn: 2 },
+      '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+    });
 
-    expect(chess.find(`[data-test-id=cell-${row}-${col}]`).classes().indexOf(`piece-${piece}`)).toBeGreaterThanOrEqual(0);
+    const chess = mount(Chess);
+    await chess.vm.$nextTick();
+
+    expect(chess.find(THE_CELL(row, col)).classes().indexOf(THE_PIECE(piece))).toBeGreaterThanOrEqual(0);
+  });
+
+  it('shows pieces based on previous turn', async () => {
+    let initialPieces = blankGameCodeBuilder.build()['puzzle-status']['puzzle-2']['pieces-location']['current'];
+    initialPieces['0-0'] = null;
+    initialPieces['0-1'] = PIECES.BLACK_TOWER;
+    givenFirestore({
+      '/': { turn: 2 },
+      '/puzzle-status/puzzle-2/pieces-location/current': initialPieces
+    });
+
+    const chess = mount(Chess);
+    await chess.vm.$nextTick();
+
+    expect(chess.find(THE_CELL(0, 0)).classes().indexOf(THE_PIECE(PIECES.BLACK_TOWER))).toBe(-1);
+    expect(chess.find(THE_CELL(0, 1)).classes().indexOf(THE_PIECE(PIECES.BLACK_TOWER))).toBeGreaterThanOrEqual(0);
   });
 
   const givenTurnForPlayer = (player) =>
     givenFirestore({
-      '/': { turn: player }
+      '/': { turn: player },
+      '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
     });
 
   describe('Is turn based', () => {

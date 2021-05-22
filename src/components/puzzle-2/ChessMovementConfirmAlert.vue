@@ -2,7 +2,7 @@
   <div class="chess-movements-alert" data-test-id="movement-confirm-alert" >
     <p>¿Confirmar movimiento?</p>
     <input type="button" class="chess-movements-alert-button" data-test-id="movement-confirm-alert-btn-yes"
-           value="Sí"/>
+           value="Sí"  @click="clickYes()"/>
     <input type="button" class="chess-movements-alert-button" data-test-id="movement-confirm-alert-btn-no"
            value="No" @click="clickNo()"/>
   </div>
@@ -42,10 +42,13 @@
 <script>
 export default {
   name: 'ChessMovementConfirmAlert',
-  emits: [ 'clicked-no' ],
+  emits: [ 'clicked-no', 'clicked-yes' ],
   methods: {
     clickNo() {
       this.$emit('clicked-no');
+    },
+    clickYes() {
+      this.$emit('clicked-yes');
     }
   }
 }

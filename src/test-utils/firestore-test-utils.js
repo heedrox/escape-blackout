@@ -6,8 +6,8 @@ const givenFirestore = (mappings) =>
 const givenFirestoreCollection = (mappings) =>
   firebaseUtil.collection.mockImplementation((path) => mappings[path]);
 
-const getUpdatedField = (wrapper, firestoreRef, field) => {
-  const mock = wrapper.vm.$firestoreRefs[firestoreRef];
+const getUpdatedField = (wrapper, firestoreRefName, field) => {
+  const mock = wrapper.vm.$firestoreRefs[firestoreRefName];
   const allCalls = mock.update.mock.calls;
   const theCall = allCalls.find(call => typeof call[0][field] !== 'undefined'); // { field: 2 }
   return theCall ? theCall[0][field] : undefined;

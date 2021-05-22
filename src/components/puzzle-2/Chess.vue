@@ -9,7 +9,7 @@
     </div>
     <div class="chess-movements">
       <chess-movement-list />
-      <chess-movement-confirm-alert v-if="showConfirmMovement" @clicked-no="clickConfirmMovementNo()"/>
+      <chess-movement-confirm-alert v-if="showConfirmMovement" @clicked-no="clickConfirmMovementNo()" @clicked-yes="clickConfirmMovementYes()"/>
     </div>
   </div>
 </template>
@@ -88,12 +88,13 @@
 }
 </style>
 <script>
-import { POSSIBLE_MOVEMENTS, INITIAL_PIECES_BUILDER } from './chess-constants';
+import { POSSIBLE_MOVEMENTS } from './chess-constants';
 import GetPlayerNumber from '../../lib/get-num-player';
 import OverlayTurn from '../overlay-turn/OverlayTurn';
 import ChessMovementConfirmAlert from './ChessMovementConfirmAlert';
 import ChessMovementList from './ChessMovementList';
 import ChessBoard from './ChessBoard';
+import firebaseUtil from '../../lib/firebase/firebase-util';
 
 const isWhitePiece = (row) => row >= 4;
 const isBlackPiece = (row) => row < 4;
@@ -115,11 +116,16 @@ export default {
   components: { OverlayTurn, ChessBoard, ChessMovementConfirmAlert, ChessMovementList },
   data() {
     return {
-      piecesLocation: INITIAL_PIECES_BUILDER.build(),
+      piecesLocation: {},
       cellOrigin: null,
       cellTarget: null,
       globalStatus: { loaded: false },
       showConfirmMovement: false
+    }
+  },
+  firestore() {
+    return {
+      piecesLocation: firebaseUtil.doc('/puzzle-status/puzzle-2/pieces-location/current'),
     }
   },
   methods: {
@@ -133,13 +139,23 @@ export default {
       }
     },
     clickConfirmMovementNo() {
-      this.showConfirmMovement = false;
       this.movePiece(this.cellTarget.clickedRow, this.cellTarget.clickedCol, this.cellOrigin.clickedRow, this.cellOrigin.clickedCol);
+      this.resetMovement();
+    },
+    clickConfirmMovementYes() {
+      this.resetMovement();
+    },
+    resetMovement() {
+      this.showConfirmMovement = false;
+      this.cellOrigin = null;
+      this.cellTarget = null;
     },
     movePiece(rowOrigin, colOrigin, rowTarget, colTarget) {
       const movedPiece = this.piecesLocation[`${rowOrigin}-${colOrigin}`];
-      this.piecesLocation[`${rowOrigin}-${colOrigin}`] = undefined;
-      this.piecesLocation[`${rowTarget}-${colTarget}`] = movedPiece;
+      this.$firestoreRefs.piecesLocation.update({
+        [`${rowOrigin}-${colOrigin}`]: null,
+        [`${rowTarget}-${colTarget}`]: movedPiece
+      })
     },
     existsPiece(clickedRow, clickedCol) {
       return this.piecesLocation[`${clickedRow}-${clickedCol}`] !== undefined;

@@ -1,11 +1,18 @@
 import Chess from './Chess';
 import { mount } from '@vue/test-utils';
 import { givenPlayerNumber } from '../../test-utils/game-test-utils';
+import { givenFirestore } from '../../test-utils/firestore-test-utils';
+import { INITIAL_PIECES_BUILDER } from './chess-constants';
 
 const THE_CELL = (row, col) => `[data-test-id=cell-${row}-${col}]`;
 
 describe('Chess Movements', () => {
   it('does not show any possible movement when no piece is selected', () => {
+    givenFirestore({
+      '/': { turn: 2 },
+      '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+    });
+
     const chess = mount(Chess);
 
     expect(chess.findAll('.possible-movement').length).toBe(0);
@@ -20,7 +27,12 @@ describe('Chess Movements', () => {
     ${2}         | ${6} | ${0} | ${0}              | ${'whites'}
     `('shows possible movements: $expectedMovements, when player $playerNumber moving $pieceMoving', async ( { playerNumber, row, col, expectedMovements }) => {
       givenPlayerNumber(playerNumber);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
       const chess = mount(Chess);
+      await chess.vm.$nextTick();
 
       chess.find(THE_CELL(row, col)).trigger('click');
       await chess.vm.$nextTick();
@@ -50,6 +62,10 @@ describe('Chess Movements', () => {
   describe('When moves are executed', () => {
     it('does not move if DN is not selected', async () => {
       givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
       const chess = mount(Chess);
       chess.find(THE_CELL(0, 0)).trigger('click');
       await chess.vm.$nextTick();
@@ -62,6 +78,10 @@ describe('Chess Movements', () => {
 
     it('does not move when piece not selected', async () => {
       givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
       const chess = mount(Chess);
 
       chess.find(THE_CELL(2, 3)).trigger('click');
@@ -79,6 +99,10 @@ describe('Chess Movements', () => {
       ${0}      | ${0}      | ${0}      | ${1}      | ${'piece-tn'}
     `('moves $movedPiece from $originRow-$originCol to $targetRow-$targetCol', async ( { originRow, originCol, targetRow, targetCol, movedPiece }) => {
       givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
       const chess = mount(Chess);
       chess.find(THE_CELL(originRow, originCol)).trigger('click');
       await chess.vm.$nextTick();
@@ -92,6 +116,10 @@ describe('Chess Movements', () => {
 
     it('does not move the DN again', async () => {
       givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
       const chess = mount(Chess);
       chess.find(THE_CELL(0, 3)).trigger('click');
       await chess.vm.$nextTick();
