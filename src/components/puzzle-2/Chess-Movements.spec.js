@@ -22,7 +22,7 @@ describe('Chess Movements', () => {
     it.each`
     playerNumber | row  | col  | expectedMovements | pieceMoving
     ${1}         | ${0} | ${0} | ${0}              | ${'blacks'}
-    ${1}         | ${6} | ${0} | ${3}              | ${'whites'}
+    ${1}         | ${6} | ${0} | ${4}              | ${'whites'}
     ${2}         | ${0} | ${0} | ${4}              | ${'blacks'}
     ${2}         | ${6} | ${0} | ${0}              | ${'whites'}
     `('shows possible movements: $expectedMovements, when player $playerNumber moving $pieceMoving', async ( { playerNumber, row, col, expectedMovements }) => {

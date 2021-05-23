@@ -26,12 +26,12 @@ describe('Chess', () => {
   ${1}  | ${6}   | ${'an'}
   ${3}  | ${0}   | ${'pn'}
   ${3}  | ${3}   | ${'pn'}
-  ${4}  | ${4}   | ${'pb'}
+  ${5}  | ${4}   | ${'pb'}
   ${6}  | ${0}   | ${'tb'}
   ${6}  | ${2}   | ${'pb'}
   ${7}  | ${2}   | ${'ab'}
   ${7}  | ${4}   | ${'rb'}
-  ${7}  | ${5}   | ${'cb'}
+  ${7}  | ${6}   | ${'cb'}
 
   `('shows pieces on each initial stage - $row / $col - $piece', async ( { row, col, piece }) => {
     givenFirestore({

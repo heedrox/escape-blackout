@@ -8,7 +8,7 @@
                    @clicked-cell="clickCell"/>
     </div>
     <div class="chess-movements">
-      <chess-movement-list />
+      <chess-movement-list :movements="movements" />
       <chess-movement-confirm-alert v-if="showConfirmMovement" @clicked-no="clickConfirmMovementNo()" @clicked-yes="clickConfirmMovementYes()"/>
     </div>
   </div>
@@ -88,7 +88,7 @@
 }
 </style>
 <script>
-import { POSSIBLE_MOVEMENTS } from './chess-constants';
+import { INITIAL_PIECES_BUILDER, POSSIBLE_MOVEMENTS } from './chess-constants';
 import GetPlayerNumber from '../../lib/get-num-player';
 import OverlayTurn from '../overlay-turn/OverlayTurn';
 import ChessMovementConfirmAlert from './ChessMovementConfirmAlert';
@@ -120,7 +120,8 @@ export default {
       cellOrigin: null,
       cellTarget: null,
       globalStatus: { loaded: false },
-      showConfirmMovement: false
+      showConfirmMovement: false,
+      movements: []
     }
   },
   firestore() {
@@ -128,9 +129,19 @@ export default {
       piecesLocation: firebaseUtil.doc('/puzzle-status/puzzle-2/pieces-location/current'),
     }
   },
+  mounted() {
+    //Temporary hack
+    if (window.location.href.indexOf('?RESETCHESS')>=0) {
+      this.$firestoreRefs.piecesLocation.set(INITIAL_PIECES_BUILDER.build());
+    }
+  },
   methods: {
     clickCell({ clickedRow, clickedCol }) {
       if (this.cellOrigin && canMove(this.cellOrigin, { clickedRow, clickedCol })) {
+        this.movements.push({
+          piece: this.getPiece(this.cellOrigin.clickedRow, this.cellOrigin.clickedCol),
+          cellOrigin: { row: this.cellOrigin.clickedRow, col: this.cellOrigin.clickedCol } ,
+          cellTarget: { row: clickedRow, col: clickedCol }});
         this.movePiece(this.cellOrigin.clickedRow, this.cellOrigin.clickedCol, clickedRow, clickedCol);
         this.showConfirmMovement = true;
         this.cellTarget = { clickedRow, clickedCol };
@@ -141,6 +152,7 @@ export default {
     clickConfirmMovementNo() {
       this.movePiece(this.cellTarget.clickedRow, this.cellTarget.clickedCol, this.cellOrigin.clickedRow, this.cellOrigin.clickedCol);
       this.resetMovement();
+      this.movements.pop();
     },
     clickConfirmMovementYes() {
       this.resetMovement();
@@ -159,6 +171,9 @@ export default {
     },
     existsPiece(clickedRow, clickedCol) {
       return this.piecesLocation[`${clickedRow}-${clickedCol}`] !== undefined;
+    },
+    getPiece(row, col) {
+      return this.piecesLocation[`${row}-${col}`];
     }
   }
 }
