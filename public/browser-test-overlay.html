@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Browser test overlay</title>
+  <style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+        margin:0;
+        overflow: hidden;
+    }
+    .ok {
+        background-color: #009900;
+    }
+    .ko {
+        background-color: #990000;
+    }
+    .ok .oktext { display: block }
+    .ok .kotext { display: none; }
+    .ko .oktext { display: none }
+    .ok .oktext { display: block; }
+    .loading .oktext, .loading .kotext { display: none }
+    .text {
+        font-size: 50vh;
+        text-align: center;
+        width:98vw;
+        height: 98vh;
+        margin: 0;
+        position: fixed;
+        top: 25vh;
+        color:#fff;
+        font-family: Consolas, sans-serif;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    }
+  </style>
+</head>
+<body class="loading">
+  <div class="oktext text">GREEN</div>
+  <div class="kotext text">RED</div>
+  <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js"></script>
+  <script type="text/javascript">
+    fetch('./browser-test-overlay.config.json')
+    .then((data) => data.json())
+    .then((config) => {
+
+      var firebaseConfig = {
+        projectId: config.projectId,
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const firestore = firebase.firestore();
+      firestore.doc('/browser-test-overlay/color-test-result').onSnapshot((doc) => {
+        console.log('received doc', doc.data());
+        document.body.classList.remove('loading');
+        document.body.classList.remove('ok');
+        document.body.classList.remove('ko');
+        document.body.classList.add(doc.data().result ? 'ok' : 'ko');
+      });
+    });
+    </script>
+</body>
+</html>

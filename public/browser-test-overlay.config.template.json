@@ -1,0 +1,4 @@
+{
+  "what_is_this": "Add here your firebase configuration, so that browser-test-overlay.html can use it.",
+  "projectId": "xxxxxxx"
+}

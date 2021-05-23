@@ -4,6 +4,7 @@ node_modules
 db-options.js
 db-test-options.js
 .firebaserc
+public/browser-test-overlay.config.json
 
 # local env files
 .env.local

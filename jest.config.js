@@ -13,10 +13,15 @@ const isYeelightInstalled = () => {
 };
 
 const isYeelightActive = () => process.env.YEELIGHT_JEST_ACTIVE === 'true';
+const addIf = (condition, ...elements) =>
+  condition ? elements : [];
 
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest',
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
   setupFilesAfterEnv: ["<rootDir>/src/test-utils/setup.js"],
-  watchPlugins: isYeelightInstalled() && isYeelightActive() ? [ [ 'jest-plugin-yeelight', { ip: process.env.YEELIGHT_JEST_IP } ]] : [],
-}
+  watchPlugins: [
+    ...addIf(isYeelightInstalled() && isYeelightActive(), [ 'jest-plugin-yeelight', { ip: process.env.YEELIGHT_JEST_IP } ]),
+    [ './src/test-utils/browser-test-overlay.js' ]
+    ]
+};
