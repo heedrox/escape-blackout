@@ -36,7 +36,7 @@
   opacity:.9;
   border: solid 1px #999;
   width: 60vw;
-  height: 70vh;
+  height: 75vh;
   margin-top: 8vh;
   margin-left: 18vw;
   display: flex;
