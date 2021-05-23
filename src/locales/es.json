@@ -1,7 +1,7 @@
 {
   "global": {
     "your-turn": "Tu turno",
-    "not-your-turn": "No es tu turno"
+    "not-your-turn": "No tienes el control del servidor"
   },
   "apps": {
     "network": "Network",
