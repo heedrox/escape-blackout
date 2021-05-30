@@ -124,6 +124,20 @@ describe('Chess Movements are executed', () => {
       expect(getNumberTimesFieldIsUpdated(chess, 'piecesLocation', '0-0')).toBe(2);
       expect(getNumberTimesFieldIsUpdated(chess, 'piecesLocation', '0-2')).toBe(2);
     });
+
+    it('does not fail when no movement was created', async () => {
+      givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
+      const chess = mount(Chess);
+
+      expect(async () => {
+        await chess.vm.$destroy();
+        await chess.vm.$nextTick();
+      }).not.toThrow();
+    });
   });
 
   describe('when YES is selected', () => {
@@ -164,4 +178,5 @@ describe('Chess Movements are executed', () => {
     });
   });
 
+  it.todo('when a movement is confirmed, the movement list maintains, and the turn goes on, and ...');
 });

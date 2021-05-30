@@ -153,7 +153,9 @@ export default {
       }
     },
     clickConfirmMovementNo() {
-      this.movePiece(this.cellTarget.clickedRow, this.cellTarget.clickedCol, this.cellOrigin.clickedRow, this.cellOrigin.clickedCol);
+      if (this.cellTarget && this.cellOrigin) {
+        this.movePiece(this.cellTarget.clickedRow, this.cellTarget.clickedCol, this.cellOrigin.clickedRow, this.cellOrigin.clickedCol);
+      }
       this.resetMovement();
       this.movements.pop();
     },
