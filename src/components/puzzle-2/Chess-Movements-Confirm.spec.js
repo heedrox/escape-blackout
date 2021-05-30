@@ -65,9 +65,8 @@ describe('Chess Movements are executed', () => {
       await clickButton(chess, THE_CELL_TARGET);
 
       expect(chess.findAll(MOVEMENT_LIST_EACH).length).toBe(1);
-      expect(chess.find('[data-test-id=chess-movement-0-left-piece]').exists()).toBeTruthy();
       expect(chess.find('[data-test-id=chess-movement-0-left-piece]').classes().indexOf(THE_MOVED_PIECE_CLASS)).toBeGreaterThanOrEqual(0);
-      expect(chess.find('[data-test-id=chess-movement-0-left-text]').text()).toBe('A8 C8');
+      expect(chess.find('[data-test-id=chess-movement-0-left-text]').text()).toBe('C8');
     });
   });
 
@@ -107,6 +106,25 @@ describe('Chess Movements are executed', () => {
     expect(chess.findAll('.possible-movement').length).toBeGreaterThan(0);
     });
 
+  });
+
+  describe('when window closed or component destroyed', () => {
+    it.skip('undoes movement', async () => {
+      givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build()
+      });
+      const chess = mount(Chess);
+      await clickButton(chess, THE_CELL_ORIGIN);
+      await clickButton(chess, THE_CELL_TARGET);
+
+      await chess.vm.$options.methods.beforeDestroy();
+
+
+      expect(chess.find(THE_CELL_ORIGIN).classes().indexOf(THE_MOVED_PIECE_CLASS)).toBeGreaterThanOrEqual(0);
+      expect(chess.find(THE_CELL_TARGET).classes().indexOf(THE_MOVED_PIECE_CLASS)).toBe(-1);
+    });
   });
 
   describe('when YES is selected', () => {

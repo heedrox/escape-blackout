@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     classesForMovementPiece: (movement) => ['movement-piece', `piece-${movement.piece}`],
-    textForMovement: (movement) => `${textForCell(movement.cellOrigin)} ${textForCell(movement.cellTarget)}`
+    textForMovement: (movement) => textForCell(movement.cellTarget)
   },
 };
 </script>

@@ -1,6 +1,8 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import DesktopWindow from './DesktopWindow.vue'
 import Puzzle1 from './puzzle-1/Puzzle1';
+import Chess from './puzzle-2/Chess';
+import ChessBoard from './puzzle-2/ChessBoard';
 
 describe('DesktopWindow.vue', () => {
   it('renders the text', () => {
