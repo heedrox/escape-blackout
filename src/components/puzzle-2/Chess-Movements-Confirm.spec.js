@@ -119,7 +119,7 @@ describe('Chess Movements are executed', () => {
       await clickButton(chess, THE_CELL_ORIGIN);
       await clickButton(chess, THE_CELL_TARGET);
 
-      await chess.vm.$options.methods.beforeDestroy();
+      await chess.vm.$destroy();
 
 
       expect(chess.find(THE_CELL_ORIGIN).classes().indexOf(THE_MOVED_PIECE_CLASS)).toBeGreaterThanOrEqual(0);
