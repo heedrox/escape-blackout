@@ -1,7 +1,7 @@
 import Chess from './Chess';
 import { mount } from '@vue/test-utils';
 import { givenPlayerNumber } from '../../test-utils/game-test-utils';
-import { getUpdatedField, givenFirestore } from '../../test-utils/firestore-test-utils';
+import { getNumberTimesFieldIsUpdated, getUpdatedField, givenFirestore } from '../../test-utils/firestore-test-utils';
 import { INITIAL_PIECES_BUILDER, PIECES } from './chess-constants';
 
 const THE_CELL = (row, col) => `[data-test-id=cell-${row}-${col}]`;
@@ -109,7 +109,7 @@ describe('Chess Movements are executed', () => {
   });
 
   describe('when window closed or component destroyed', () => {
-    it.skip('undoes movement', async () => {
+    it('undoes movement', async () => {
       givenPlayerNumber(2);
       givenFirestore({
         '/': { turn: 2 },
@@ -121,9 +121,8 @@ describe('Chess Movements are executed', () => {
 
       await chess.vm.$destroy();
 
-
-      expect(chess.find(THE_CELL_ORIGIN).classes().indexOf(THE_MOVED_PIECE_CLASS)).toBeGreaterThanOrEqual(0);
-      expect(chess.find(THE_CELL_TARGET).classes().indexOf(THE_MOVED_PIECE_CLASS)).toBe(-1);
+      expect(getNumberTimesFieldIsUpdated(chess, 'piecesLocation', '0-0')).toBe(2);
+      expect(getNumberTimesFieldIsUpdated(chess, 'piecesLocation', '0-2')).toBe(2);
     });
   });
 

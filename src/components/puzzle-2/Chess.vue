@@ -135,9 +135,9 @@ export default {
       this.$firestoreRefs.piecesLocation.set(INITIAL_PIECES_BUILDER.build());
     }
   },
-  /* beforeDestroy() {
+  beforeDestroy() {
     this.clickConfirmMovementNo();
-  }, */
+  },
   methods: {
     clickCell({ clickedRow, clickedCol }) {
       if (this.cellOrigin && canMove(this.cellOrigin, { clickedRow, clickedCol })) {
