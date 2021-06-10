@@ -111,22 +111,35 @@ const canIMove = (clickedRow) =>
     ((GetPlayerNumber.get() === 1 && isWhitePiece(clickedRow)) ||
         (GetPlayerNumber.get() === 2) && isBlackPiece(clickedRow));
 
+
+const getDBMovements = (movements) =>
+    `${movements[0].piece}${movements[0].cellTarget.row}${movements[0].cellTarget.col}`;
+
+const getMovementsFromDb = (dbMovements) => {
+  //(Piece)(R)(C) - example tn02 - torre negra row 0, col 2
+  const piece = dbMovements.substring(0,2);
+  const row = parseInt(dbMovements.substring(2,3));
+  const col = parseInt(dbMovements.substring(3,4));
+  return [ { piece , cellTarget: { row, col } } ];
+}
 export default {
   name: 'Chess',
   components: { OverlayTurn, ChessBoard, ChessMovementConfirmAlert, ChessMovementList },
   data() {
     return {
       piecesLocation: {},
+      puzzle2Status: {},
       cellOrigin: null,
       cellTarget: null,
       globalStatus: { loaded: false },
       showConfirmMovement: false,
-      movements: []
+      movements: [ ]
     }
   },
   firestore() {
     return {
       piecesLocation: firebaseUtil.doc('/puzzle-status/puzzle-2/pieces-location/current'),
+      puzzle2Status: firebaseUtil.doc('/puzzle-status/puzzle-2')
     }
   },
   mounted() {
@@ -160,6 +173,7 @@ export default {
       this.movements.pop();
     },
     clickConfirmMovementYes() {
+      this.$firestoreRefs.puzzle2Status.update({ movements: getDBMovements(this.movements)});
       this.resetMovement();
     },
     resetMovement() {
@@ -179,6 +193,13 @@ export default {
     },
     getPiece(row, col) {
       return this.piecesLocation[`${row}-${col}`];
+    }
+  },
+  watch: {
+    puzzle2Status: function(puzzleStatus) {
+      if (puzzleStatus && puzzleStatus.movements && typeof puzzleStatus.movements === 'string') {
+        this.movements = getMovementsFromDb(puzzleStatus.movements);
+      }
     }
   }
 }

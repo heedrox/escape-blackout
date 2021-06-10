@@ -176,7 +176,29 @@ describe('Chess Movements are executed', () => {
 
       expect(chess.findAll('.possible-movement').length).toBeGreaterThan(0);
     });
+
+    it('persists the current movement in firebase', () => {
+      expect(getUpdatedField(chess, 'puzzle2Status', 'movements')).toBe('tn02');
+    });
   });
 
-  it.todo('when a movement is confirmed, the movement list maintains, and the turn goes on, and ...');
+  describe('When movements are persisted', () => {
+    it('shows movements when 1 movement has been made', async () => {
+      givenPlayerNumber(2);
+      givenFirestore({
+        '/': { turn: 2 },
+        '/puzzle-status/puzzle-2/pieces-location/current': INITIAL_PIECES_BUILDER.build(),
+        '/puzzle-status/puzzle-2': { movements: 'tn20' },
+      });
+
+      const chess = mount(Chess);
+      await chess.vm.$nextTick();
+
+      expect(chess.findAll(MOVEMENT_LIST_EACH).length).toBe(1);
+      expect(chess.find('[data-test-id=chess-movement-0-left-piece]').classes().indexOf(THE_MOVED_PIECE_CLASS)).toBeGreaterThanOrEqual(0);
+      expect(chess.find('[data-test-id=chess-movement-0-left-text]').text()).toBe('A6');
+    });
+  });
+
+  it.todo('when a movement is done and confirmed, i cannot move again, until se cambia el turno');
 });
